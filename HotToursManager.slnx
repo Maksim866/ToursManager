@@ -1,0 +1,15 @@
+<Solution>
+  <Folder Name="/BL/">
+    <Project Path="HotToursManager.Services.Contracts/HotToursManager.Services.Contracts.csproj" Id="f0ed36ff-9e29-44e5-a854-55fdfc5789da" />
+    <Project Path="HotToursManager.Services/HotToursManager.Services.csproj" Id="31d3cfb6-568f-4437-b825-568937e6d5d7" />
+  </Folder>
+  <Folder Name="/DAL/">
+    <Project Path="HotToursManager.Storage.Contracts/HotToursManager.Storage.Contracts.csproj" Id="ee921aec-a3e5-4746-9663-7a36a78812f6" />
+    <Project Path="HotToursManager.Storage.InMemory/HotToursManager.Storage.InMemory.csproj" Id="8371997d-e6fd-4dd1-9372-c4c2602457fb" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+  </Folder>
+  <Project Path="HotToursManager.Desktop/HotToursManager.Desktop.csproj" />
+  <Project Path="HotToursManager.Models/HotToursManager.Models.csproj" Id="01a78a2f-e43d-4c2b-b86d-34ac04da8fd5" />
+</Solution>
