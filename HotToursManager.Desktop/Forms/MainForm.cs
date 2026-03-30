@@ -6,53 +6,15 @@ namespace HotToursManager.Desktop
     {
         private readonly ITourService service;
         private DataGridView dataGridView1;
-        private Button btnAdd;
-        private Button btnEdit;
-        private Button btnDelete;
-        private Label lblStats;
         private decimal maxTotalCost = 1; // для пропорциональной заливки
 
         public MainForm(ITourService service)
         {
-            InitializeComponent(); // ← пустой метод
+            InitializeComponent();
             this.service = service;
 
+            dataGridView1.CellPainting += DataGridView1_CellPainting;
             dataGridView1.Dock = DockStyle.Fill;
-            dataGridView1.Location = new System.Drawing.Point(0, 0);
-            dataGridView1.Size = new System.Drawing.Size(0, 0);
-
-            var buttonPanel = new Panel
-            {
-                Dock = DockStyle.Top,
-                Height = 50,
-                Padding = new Padding(10)
-            };
-
-            btnAdd = new Button { Text = "Добавить", Size = new System.Drawing.Size(100, 30) };
-            btnEdit = new Button { Text = "Изменить", Size = new System.Drawing.Size(100, 30) };
-            btnDelete = new Button { Text = "Удалить", Size = new System.Drawing.Size(100, 30) };
-
-            btnAdd.Click += BtnAdd_Click;
-            btnEdit.Click += BtnEdit_Click;
-            btnDelete.Click += BtnDelete_Click;
-
-            buttonPanel.Controls.AddRange(new Control[] { btnAdd, btnEdit, btnDelete });
-            this.Controls.Add(buttonPanel);
-
-            // Добавляем статистику ВНИЗУ
-            lblStats = new Label
-            {
-                Dock = DockStyle.Bottom,
-                Height = 48,
-                Padding = new Padding(10),
-                Font = new System.Drawing.Font("Segoe UI", 9F),
-                TextAlign = ContentAlignment.MiddleLeft,
-                BackColor = System.Drawing.Color.LightGray,
-                ForeColor = System.Drawing.Color.Black,
-                AutoSize = false
-            };
-            this.Controls.Add(lblStats);
-
 
             RefreshGrid();
             UpdateStats();
@@ -71,8 +33,6 @@ namespace HotToursManager.Desktop
 
         private void SetupGrid()
         {
-            dataGridView1.CellPainting += DataGridView1_CellPainting;
-
             // Настройка заголовков и форматов
             foreach (DataGridViewColumn col in dataGridView1.Columns)
             {
@@ -130,10 +90,10 @@ namespace HotToursManager.Desktop
         private void UpdateStats()
         {
             var stats = service.GetStatistics();
-            lblStats.Text = $"Всего: {stats.TotalTours} | Общая: {stats.TotalCost:N0} ₽ | С допл.: {stats.ToursWithSurcharges} | Допл.: {stats.TotalSurcharges:N0} ₽";
+            label1.Text = $"Всего: {stats.TotalTours} | Общая: {stats.TotalCost:N0} ₽ | С допл.: {stats.ToursWithSurcharges} | Допл.: {stats.TotalSurcharges:N0} ₽";
         }
 
-        private void BtnAdd_Click(object sender, EventArgs e)
+        private void btnAdd_Click_1(object sender, EventArgs e)
         {
             var form = new AddEditTourForm(service, null);
             if (form.ShowDialog() == DialogResult.OK)
@@ -143,7 +103,7 @@ namespace HotToursManager.Desktop
             }
         }
 
-        private void BtnEdit_Click(object sender, EventArgs e)
+        private void btnEdit_Click_1(object sender, EventArgs e)
         {
             if (dataGridView1.SelectedRows.Count > 0)
             {
@@ -162,7 +122,7 @@ namespace HotToursManager.Desktop
             }
         }
 
-        private void BtnDelete_Click(object sender, EventArgs e)
+        private void btnDelete_Click_1(object sender, EventArgs e)
         {
             if (dataGridView1.SelectedRows.Count > 0)
             {
@@ -201,7 +161,7 @@ namespace HotToursManager.Desktop
             }
             float ratio = Math.Min(1f, (float)totalCost / (float)maxTotalCost);
 
-            int leftPad = 12;
+            int leftPad = 4;
             int rightPad = 8;
             int topPad = 3;
             int bottomPad = 3;

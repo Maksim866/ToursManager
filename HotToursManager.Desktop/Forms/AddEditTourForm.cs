@@ -159,13 +159,9 @@ namespace HotToursManager.Desktop
                 errorProvider.SetError(txtSurcharges, "");
                 currentTour.Surcharges = surcharges;
             }
-
-            if (isValid)
-            {
-                currentTour.HasWiFi = chkHasWiFi.Checked;
-                currentTour.DepartureDate = dtpDeparture.Value;
-                UpdateCostDisplays();
-            }
+            currentTour.HasWiFi = chkHasWiFi.Checked;
+            currentTour.DepartureDate = dtpDeparture.Value;
+            UpdateCostDisplays();
         }
         private void UpdateCostDisplays()
         {
