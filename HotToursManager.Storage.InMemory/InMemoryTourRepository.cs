@@ -15,9 +15,12 @@ namespace HotToursManager.Storage.InMemory
         /// </summary>
         public InMemoryTourRepository()
         {
-            tours.Add(new Tour
+            SeedInitialData();
+        }
+        private void SeedInitialData()
+        {
+            Add(new Tour
             {
-                Id = nextId++,
                 Destination = "Турция",
                 DepartureDate = new DateTime(2024, 6, 15),
                 Nights = 7,
@@ -27,9 +30,8 @@ namespace HotToursManager.Storage.InMemory
                 Surcharges = 1500,
             });
 
-            tours.Add(new Tour
+            Add(new Tour
             {
-                Id = nextId++,
                 Destination = "Испания",
                 DepartureDate = new DateTime(2024, 7, 20),
                 Nights = 10,
@@ -38,9 +40,9 @@ namespace HotToursManager.Storage.InMemory
                 HasWiFi = false,
                 Surcharges = 2300,
             });
-            tours.Add(new Tour
+
+            Add(new Tour
             {
-                Id = nextId++,
                 Destination = "Италия",
                 DepartureDate = new DateTime(2024, 8, 5),
                 Nights = 5,
@@ -49,9 +51,9 @@ namespace HotToursManager.Storage.InMemory
                 HasWiFi = true,
                 Surcharges = 0
             });
-            tours.Add(new Tour
+
+            Add(new Tour
             {
-                Id = nextId++,
                 Destination = "Франция",
                 DepartureDate = new DateTime(2024, 9, 10),
                 Nights = 8,
@@ -60,9 +62,9 @@ namespace HotToursManager.Storage.InMemory
                 HasWiFi = true,
                 Surcharges = 800
             });
-            tours.Add(new Tour
+
+            Add(new Tour
             {
-                Id = nextId++,
                 Destination = "Шушары",
                 DepartureDate = new DateTime(2024, 10, 1),
                 Nights = 14,

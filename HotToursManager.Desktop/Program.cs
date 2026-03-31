@@ -3,6 +3,9 @@ using HotToursManager.Storage.InMemory;
 
 namespace HotToursManager.Desktop
 {
+    /// <summary>
+    /// Главный класс программы, содержащий точку входа в приложение.
+    /// </summary>
     internal static class Program
     {
         /// <summary>

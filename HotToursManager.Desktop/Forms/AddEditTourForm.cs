@@ -1,9 +1,10 @@
 using HotToursManager.Models;
 using HotToursManager.Services.Contracts;
+using HotToursManager.Desktop.Helpers;
 
 namespace HotToursManager.Desktop
 {
-    public partial class AddEditTourForm : Form
+    public class AddEditTourForm : Form
     {
         private ITourService tourService;
         private Tour currentTour;
@@ -34,16 +35,18 @@ namespace HotToursManager.Desktop
             if (id.HasValue)
             {
                 this.Text = "Редактирование тура";
-                Tour existingTour = tourService.GetTourById(id.Value);
+                var existingTour = tourService.GetTourById(id.Value);
                 if (existingTour != null)
                 {
                     currentTour = existingTour;
-                    LoadTourToForm();
+                    TourFormMapper.LoadTourToForm(
+                        currentTour, txtDestination, dtpDeparture, txtNights, txtCostPerPerson,
+                        txtNumberOfPeople, chkHasWiFi, txtSurcharges);
                 }
-            }
-            else
-            {
-                this.Text = "Добавление тура";
+                else
+                {
+                    this.Text = "Добавление тура";
+                }
             }
         }
         private void InitializeComponent()
@@ -88,16 +91,6 @@ namespace HotToursManager.Desktop
             txtSurcharges.TextChanged += (s, e) => ValidateAndUpdate();
             chkHasWiFi.CheckedChanged += (s, e) => ValidateAndUpdate();
             dtpDeparture.ValueChanged += (s, e) => UpdateCostDisplays();
-        }
-        private void LoadTourToForm()
-        {
-            txtDestination.Text = currentTour.Destination;
-            dtpDeparture.Value = currentTour.DepartureDate;
-            txtNights.Text = currentTour.Nights.ToString();
-            txtCostPerPerson.Text = currentTour.CostPerPerson.ToString();
-            txtNumberOfPeople.Text = currentTour.NumberOfPeople.ToString();
-            chkHasWiFi.Checked = currentTour.HasWiFi;
-            txtSurcharges.Text = currentTour.Surcharges.ToString();
         }
         private void ValidateAndUpdate()
         {
@@ -166,77 +159,45 @@ namespace HotToursManager.Desktop
             lblTotalCost.Text = $"{currentTour.TotalCost:N2} руб";
             lblPricePerNight.Text = $"{currentTour.PricePerNight:N2} руб";
         }
-        private bool ValidateForm()
-        {
-            if (string.IsNullOrWhiteSpace(txtDestination.Text))
-            {
-                MessageBox.Show("Заполните направление", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtDestination.Focus();
-                return false;
-            }
-
-            if (!int.TryParse(txtNights.Text, out int nights) || nights < 1 || nights > 99)
-            {
-                MessageBox.Show("Количество ночей должно быть от 1 до 99", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtNights.Focus();
-                return false;
-            }
-
-            if (!decimal.TryParse(txtCostPerPerson.Text, out decimal costPerPerson) || costPerPerson < 1000 || costPerPerson > 500000)
-            {
-                MessageBox.Show("Стоимость должна быть от 1000 до 500000 рублей", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtCostPerPerson.Focus();
-                return false;
-            }
-
-            if (!int.TryParse(txtNumberOfPeople.Text, out int numberOfPeople) || numberOfPeople < 1 || numberOfPeople > 5)
-            {
-                MessageBox.Show("Количество отдыхающих должно быть от 1 до 5", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtNumberOfPeople.Focus();
-                return false;
-            }
-
-            if (!decimal.TryParse(txtSurcharges.Text, out decimal surcharges) || surcharges < 0 || surcharges > 100000)
-            {
-                MessageBox.Show("Доплата должна быть от 0 до 100000 рублей", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtSurcharges.Focus();
-                return false;
-            }
-
-            if (dtpDeparture.Value.Date < DateTime.Today.Date && editingId.HasValue == false)
-            {
-                MessageBox.Show("Дата вылета не может быть в прошлом", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                dtpDeparture.Focus();
-                return false;
-            }
-
-            return true;
-        }
         private void BtnSave_Click(object sender, EventArgs e)
         {
-            if (!ValidateForm())
+            if (TourValidator.ValidateForm(
+                txtDestination.Text,
+                int.Parse(txtNights.Text),
+                decimal.Parse(txtCostPerPerson.Text),
+                int.Parse(txtNumberOfPeople.Text),
+                decimal.Parse(txtSurcharges.Text),
+                dtpDeparture.Value,
+                editingId,
+                txtDestination, txtNights, txtCostPerPerson, txtNumberOfPeople, txtSurcharges, dtpDeparture,
+                out string errorMessage))
             {
-                return;
-            }
-            currentTour.Destination = txtDestination.Text;
-            currentTour.DepartureDate = dtpDeparture.Value;
-            currentTour.Nights = int.Parse(txtNights.Text);
-            currentTour.CostPerPerson = decimal.Parse(txtCostPerPerson.Text);
-            currentTour.NumberOfPeople = int.Parse(txtNumberOfPeople.Text);
-            currentTour.HasWiFi = chkHasWiFi.Checked;
-            currentTour.Surcharges = decimal.Parse(txtSurcharges.Text);
+                TourFormMapper.SaveFormToTour(
+                    currentTour,
+                    txtDestination.Text,
+                    dtpDeparture.Value,
+                    int.Parse(txtNights.Text),
+                    decimal.Parse(txtCostPerPerson.Text),
+                    int.Parse(txtNumberOfPeople.Text),
+                    chkHasWiFi.Checked,
+                    decimal.Parse(txtSurcharges.Text));
 
-            if (editingId.HasValue)
-            {
-                tourService.UpdateTour(currentTour);
+                if (editingId.HasValue)
+                {
+                    tourService.UpdateTour(currentTour);
+                }
+                else
+                {
+                    tourService.AddTour(currentTour);
+                }
+
+                this.DialogResult = DialogResult.OK;
+                this.Close();
             }
             else
             {
-                tourService.AddTour(currentTour);
+                MessageBox.Show(errorMessage, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-
-            this.DialogResult = DialogResult.OK;
-            this.Close();
         }
     }
 }
