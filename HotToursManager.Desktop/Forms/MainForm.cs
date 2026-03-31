@@ -90,7 +90,7 @@ namespace HotToursManager.Desktop
         private void UpdateStats()
         {
             var stats = service.GetStatistics();
-            label1.Text = $"Всего: {stats.TotalTours} | Общая: {stats.TotalCost:N0} ₽ | С допл.: {stats.ToursWithSurcharges} | Допл.: {stats.TotalSurcharges:N0} ₽";
+            label1.Text = $"Общее количество туров: {stats.TotalTours} | Общая сумма за все туры: {stats.TotalCost:N0} ₽ | Количество туров с доплатами.: {stats.ToursWithSurcharges} | Общая сумма доплат.: {stats.TotalSurcharges:N0} ₽";
         }
 
         private void btnAdd_Click_1(object sender, EventArgs e)

@@ -44,6 +44,7 @@ namespace HotToursManager.Desktop
             dataGridView1.Name = "dataGridView1";
             dataGridView1.Size = new Size(800, 413);
             dataGridView1.TabIndex = 0;
+            dataGridView1.ReadOnly = true;
             // 
             // panel1
             // 
