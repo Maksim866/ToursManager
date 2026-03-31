@@ -40,7 +40,8 @@ namespace HotToursManager.Models
         /// <summary>
         /// Цена за одну ночь для одного отдыхающего
         /// </summary>
-        public decimal PricePerNight => Nights > 0 && NumberOfPeople > 0 ? TotalCost / (Nights * NumberOfPeople) : 0;
+        public decimal PricePerNight => Nights > 0 && NumberOfPeople > 0 ? TotalCost /
+                                                        (Nights * NumberOfPeople) : 0;
         /// <summary>
         /// Общая стоимость тура
         /// </summary>

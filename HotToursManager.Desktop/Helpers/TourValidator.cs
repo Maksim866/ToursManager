@@ -1,9 +1,15 @@
-using HotToursManager.Models;
+using HotToursManager.Desktop.Constants;
 
 namespace HotToursManager.Desktop.Helpers
 {
+    /// <summary>
+    /// Класс для валидации данных формы тура.
+    /// </summary>
     public static class TourValidator
     {
+        /// <summary>
+        /// Проверяет корректность данных формы тура.
+        /// </summary>
         public static bool ValidateForm(
             string destination,
             int nights,
@@ -27,28 +33,28 @@ namespace HotToursManager.Desktop.Helpers
                 return false;
             }
 
-            if (nights < 1 || nights > 99)
+            if (nights < TourLimits.MinNights || nights > TourLimits.MaxNights)
             {
                 errorMessage = "Количество ночей должно быть от 1 до 99";
                 nightsBox.Focus();
                 return false;
             }
 
-            if (costPerPerson < 1000 || costPerPerson > 500000)
+            if (costPerPerson < TourLimits.MinCostPerPerson || costPerPerson > TourLimits.MaxCostPerPerson)
             {
                 errorMessage = "Стоимость должна быть от 1000 до 500000 рублей";
                 costBox.Focus();
                 return false;
             }
 
-            if (numberOfPeople < 1 || numberOfPeople > 5)
+            if (numberOfPeople < TourLimits.MinPeople || numberOfPeople > TourLimits.MaxPeople)
             {
                 errorMessage = "Количество отдыхающих должно быть от 1 до 5";
                 peopleBox.Focus();
                 return false;
             }
 
-            if (surcharges < 0 || surcharges > 100000)
+            if (surcharges < TourLimits.MinSurcharge || surcharges > TourLimits.MaxSurcharge)
             {
                 errorMessage = "Доплата должна быть от 0 до 100000 рублей";
                 surchargesBox.Focus();

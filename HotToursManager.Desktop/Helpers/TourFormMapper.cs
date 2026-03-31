@@ -2,9 +2,24 @@ using HotToursManager.Models;
 
 namespace HotToursManager.Desktop.Helpers
 {
+    /// <summary>
+    /// Вспомогательный класс для маппинга данных между
+    /// моделью тура и элементами формы.
+    /// </summary>
     public static class TourFormMapper
     {
-        public static void LoadTourToForm(Tour tour, TextBox destination, DateTimePicker departure, TextBox nights, TextBox cost, TextBox people, CheckBox wifi, TextBox surcharges)
+        /// <summary>
+        /// Загружает данные тура в элемент
+        /// </summary>
+        public static void LoadTourToForm(
+            Tour tour,
+            TextBox destination,
+            DateTimePicker departure,
+            TextBox nights,
+            TextBox cost,
+            TextBox people,
+            CheckBox wifi,
+            TextBox surcharges)
         {
             destination.Text = tour.Destination;
             departure.Value = tour.DepartureDate;
@@ -14,8 +29,18 @@ namespace HotToursManager.Desktop.Helpers
             wifi.Checked = tour.HasWiFi;
             surcharges.Text = tour.Surcharges.ToString();
         }
-
-        public static void SaveFormToTour(Tour tour, string destination, DateTime departure, int nights, decimal cost, int people, bool hasWiFi, decimal surcharges)
+        /// <summary>
+        /// Сохраняет данные из элементов формы в объект тура.
+        /// </summary>
+        public static void SaveFormToTour(
+            Tour tour,
+            string destination,
+            DateTime departure,
+            int nights,
+            decimal cost,
+            int people,
+            bool hasWiFi,
+            decimal surcharges)
         {
             tour.Destination = destination;
             tour.DepartureDate = departure;

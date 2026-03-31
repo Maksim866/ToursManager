@@ -2,12 +2,18 @@ using HotToursManager.Services.Contracts;
 
 namespace HotToursManager.Desktop
 {
+    /// <summary>
+    /// Главная форма приложения для управления турами.
+    /// </summary>
     public partial class MainForm : Form
     {
         private readonly ITourService service;
         private DataGridView dataGridView1;
         private decimal maxTotalCost = 1; // для пропорциональной заливки
 
+        /// <summary>
+        /// Создаёт экземпляр формы.
+        /// </summary>
         public MainForm(ITourService service)
         {
             InitializeComponent();
@@ -90,7 +96,10 @@ namespace HotToursManager.Desktop
         private void UpdateStats()
         {
             var stats = service.GetStatistics();
-            label1.Text = $"Общее количество туров: {stats.TotalTours} | Общая сумма за все туры: {stats.TotalCost:N0} ₽ | Количество туров с доплатами.: {stats.ToursWithSurcharges} | Общая сумма доплат.: {stats.TotalSurcharges:N0} ₽";
+            label1.Text = $"Общее количество туров: {stats.TotalTours} | " +
+                          $"Общая сумма за все туры: {stats.TotalCost:N0} ₽ | " +
+                          $"Количество туров с доплатами: {stats.ToursWithSurcharges} | " +
+                          $"Общая сумма доплат.: {stats.TotalSurcharges:N0} ₽";
         }
 
         private void btnAdd_Click_1(object sender, EventArgs e)
@@ -117,8 +126,11 @@ namespace HotToursManager.Desktop
             }
             else
             {
-                MessageBox.Show("Выберите тур для редактирования", "Внимание",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(
+                    "Выберите тур для редактирования",
+                    "Внимание",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
             }
         }
 
@@ -127,8 +139,11 @@ namespace HotToursManager.Desktop
             if (dataGridView1.SelectedRows.Count > 0)
             {
                 var id = (int)dataGridView1.SelectedRows[0].Cells["Id"].Value;
-                var result = MessageBox.Show("Удалить выбранный тур?", "Подтверждение",
-                    MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                var result = MessageBox.Show(
+                    "Удалить выбранный тур?",
+                    "Подтверждение",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
 
                 if (result == DialogResult.Yes)
                 {
@@ -139,8 +154,11 @@ namespace HotToursManager.Desktop
             }
             else
             {
-                MessageBox.Show("Выберите тур для удаления", "Внимание",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(
+                    "Выберите тур для удаления",
+                    "Внимание",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
             }
         }
 
@@ -159,15 +177,15 @@ namespace HotToursManager.Desktop
             {
                 return;
             }
-            float ratio = Math.Min(1f, (float)totalCost / (float)maxTotalCost);
+            var ratio = Math.Min(1f, (float)totalCost / (float)maxTotalCost);
 
             int leftPad = 4;
             int rightPad = 8;
             int topPad = 3;
             int bottomPad = 3;
 
-            int availableWidth = e.CellBounds.Width - leftPad - rightPad;
-            int fillWidth = (int)(availableWidth * ratio);
+            var availableWidth = e.CellBounds.Width - leftPad - rightPad;
+            var fillWidth = (int)(availableWidth * ratio);
             if (fillWidth < 0)
             {
                 fillWidth = 0;
