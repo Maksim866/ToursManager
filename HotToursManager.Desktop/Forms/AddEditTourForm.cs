@@ -60,18 +60,16 @@ namespace HotToursManager.Desktop
             Label lblNumberOfPeople = new Label() { Text = "Кол-во отдыхающих (1-5):", Location = new System.Drawing.Point(20, 180), Width = 150 };
             Label lblHasWiFi = new Label() { Text = "Наличие Wi-Fi:", Location = new System.Drawing.Point(20, 220), Width = 150 };
             Label lblSurcharges = new Label() { Text = "Доплата (руб):", Location = new System.Drawing.Point(20, 260), Width = 150 };
-            Label lblTotalCost = new Label() { Text = "Общая стоимость:", Location = new System.Drawing.Point(20, 300), Width = 150, Font = new System.Drawing.Font("Segoe UI", 10, System.Drawing.FontStyle.Bold) };
-            Label lblPricePerNight = new Label() { Text = "Цена за ночь:", Location = new System.Drawing.Point(20, 340), Width = 150, Font = new System.Drawing.Font("Segoe UI", 10, System.Drawing.FontStyle.Bold) };
 
+            lblTotalCost = new Label() { Text = "Общая стоимость:", Location = new System.Drawing.Point(20, 300), Width = 150, Font = new System.Drawing.Font("Segoe UI", 10, System.Drawing.FontStyle.Bold) };
+            lblPricePerNight = new Label() { Text = "Цена за ночь:", Location = new System.Drawing.Point(20, 340), Width = 150, Font = new System.Drawing.Font("Segoe UI", 10, System.Drawing.FontStyle.Bold) };
             txtDestination = new TextBox() { Location = new System.Drawing.Point(180, 17), Width = 230 };
-            dtpDeparture = new DateTimePicker() { Location = new System.Drawing.Point(180, 57), Width = 230, MinDate = DateTime.Today };
+            dtpDeparture = new DateTimePicker() { Location = new System.Drawing.Point(180, 57), Width = 230 };
             txtNights = new TextBox() { Location = new System.Drawing.Point(180, 97), Width = 230 };
             txtCostPerPerson = new TextBox() { Location = new System.Drawing.Point(180, 137), Width = 230 };
             txtNumberOfPeople = new TextBox() { Location = new System.Drawing.Point(180, 177), Width = 230 };
             chkHasWiFi = new CheckBox() { Location = new System.Drawing.Point(180, 217), Width = 230 };
             txtSurcharges = new TextBox() { Location = new System.Drawing.Point(180, 257), Width = 230 };
-            lblTotalCost = new Label() { Location = new System.Drawing.Point(180, 300), Width = 230, Font = new System.Drawing.Font("Segoe UI", 10, System.Drawing.FontStyle.Bold), ForeColor = System.Drawing.Color.DarkGreen };
-            lblPricePerNight = new Label() { Location = new System.Drawing.Point(180, 340), Width = 230, Font = new System.Drawing.Font("Segoe UI", 10, System.Drawing.FontStyle.Bold), ForeColor = System.Drawing.Color.DarkBlue };
 
             btnSave = new Button() { Text = "Сохранить", Location = new System.Drawing.Point(100, 450), Size = new System.Drawing.Size(100, 35) };
             btnCancel = new Button() { Text = "Отмена", Location = new System.Drawing.Point(220, 450), Size = new System.Drawing.Size(100, 35), DialogResult = DialogResult.Cancel };
@@ -205,7 +203,7 @@ namespace HotToursManager.Desktop
                 return false;
             }
 
-            if (dtpDeparture.Value < DateTime.Today)
+            if (dtpDeparture.Value.Date < DateTime.Today.Date && editingId.HasValue == false)
             {
                 MessageBox.Show("Дата вылета не может быть в прошлом", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 dtpDeparture.Focus();
