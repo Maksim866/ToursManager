@@ -15,17 +15,17 @@ namespace HotToursManager.Desktop.Forms
         private ErrorProvider errorProvider;
         private int? editingId;
 
-        private TextBox txtDestination;
-        private DateTimePicker dtpDeparture;
-        private TextBox txtNights;
-        private TextBox txtCostPerPerson;
-        private TextBox txtNumberOfPeople;
-        private CheckBox chkHasWiFi;
-        private TextBox txtSurcharges;
-        private Label lblTotalCost;
-        private Label lblPricePerNight;
-        private Button btnSave;
-        private Button btnCancel;
+        private TextBox txtDestination = new TextBox();
+        private DateTimePicker dtpDeparture = new DateTimePicker();
+        private TextBox txtNights = new TextBox();
+        private TextBox txtCostPerPerson = new TextBox();
+        private TextBox txtNumberOfPeople = new TextBox();
+        private CheckBox chkHasWiFi = new CheckBox();
+        private TextBox txtSurcharges = new TextBox();
+        private Label lblTotalCost = new Label();
+        private Label lblPricePerNight = new Label();
+        private Button btnSave = new Button();
+        private Button btnCancel = new Button();
         private bool isFormValid = false;
 
         /// <summary>
@@ -107,76 +107,51 @@ namespace HotToursManager.Desktop.Forms
                 Width = 150
             };
 
-            lblTotalCost = new Label
-            {
-                Text = "Общая стоимость:",
-                Location = new System.Drawing.Point(20, 300),
-                Width = 150,
-                Font = new System.Drawing.Font("Segoe UI", 10, System.Drawing.FontStyle.Bold)
-            };
-            lblPricePerNight = new Label
-            {
-                Text = "Цена за ночь:",
-                Location = new System.Drawing.Point(20, 340),
-                Width = 150,
-                Font = new System.Drawing.Font("Segoe UI", 10, System.Drawing.FontStyle.Bold)
-            };
-            txtDestination = new TextBox
-            {
-                Location = new System.Drawing.Point(180, 17),
-                Width = 230
-            };
-            dtpDeparture = new DateTimePicker()
-            {
-                Location = new System.Drawing.Point(180, 57),
-                Width = 230
-            };
-            txtNights = new TextBox()
-            {
-                Location = new System.Drawing.Point(180, 97),
-                Width = 230
-            };
-            txtCostPerPerson = new TextBox()
-            {
-                Location = new System.Drawing.Point(180, 137),
-                Width = 230
-            };
-            txtNumberOfPeople = new TextBox()
-            {
-                Location = new System.Drawing.Point(180, 177),
-                Width = 230
-            };
-            chkHasWiFi = new CheckBox()
-            {
-                Location = new System.Drawing.Point(180, 217),
-                Width = 230
-            };
-            txtSurcharges = new TextBox()
-            {
-                Location = new System.Drawing.Point(180, 257),
-                Width = 230
-            };
+            lblTotalCost.Text = "Общая стоимость:";
+            lblTotalCost.Location = new System.Drawing.Point(20, 300);
+            lblTotalCost.Width = 150;
+            lblTotalCost.Font = new System.Drawing.Font("Segoe UI", 10, System.Drawing.FontStyle.Bold);
 
-            btnSave = new Button
-            {
-                Text = "Сохранить",
-                Location = new System.Drawing.Point(100, 450),
-                Size = new System.Drawing.Size(100, 35)
-            };
-            btnCancel = new Button
-            {
-                Text = "Отмена",
-                Location = new System.Drawing.Point(220, 450),
-                Size = new System.Drawing.Size(100, 35),
-                DialogResult = DialogResult.Cancel
-            };
+            lblPricePerNight.Text = "Цена за ночь:";
+            lblPricePerNight.Location = new System.Drawing.Point(20, 340);
+            lblPricePerNight.Width = 150;
+            lblPricePerNight.Font = new System.Drawing.Font("Segoe UI", 10, System.Drawing.FontStyle.Bold);
+
+            txtDestination.Location = new System.Drawing.Point(180, 17);
+            txtDestination.Width = 230;
+
+            dtpDeparture.Location = new System.Drawing.Point(180, 57);
+            dtpDeparture.Width = 30;
+
+            txtNights.Location = new System.Drawing.Point(180, 97);
+            txtNights.Width = 230;
+
+            txtCostPerPerson.Location = new System.Drawing.Point(180, 137);
+            txtCostPerPerson.Width = 230;
+
+            txtNumberOfPeople.Location = new System.Drawing.Point(180, 177);
+            txtNumberOfPeople.Width = 230;
+
+            chkHasWiFi.Location = new System.Drawing.Point(180, 217);
+            chkHasWiFi.Width = 230;
+
+            txtSurcharges.Location = new System.Drawing.Point(180, 257);
+            txtSurcharges.Width = 230;
+
+            btnSave.Text = "Сохранить";
+            btnSave.Location = new System.Drawing.Point(100, 450);
+            btnSave.Size = new System.Drawing.Size(100, 35);
+
+            btnCancel.Text = "Отмена";
+            btnCancel.Location = new System.Drawing.Point(220, 450);
+            btnCancel.Size = new System.Drawing.Size(100, 35);
+            btnCancel.DialogResult = DialogResult.Cancel;
 
             this.Controls.AddRange(new Control[]
             {
                 lblDestination, lblDate, lblNights, lblCostPerPerson, lblNumberOfPeople, lblHasWiFi, lblSurcharges,
                 lblTotalCost, lblPricePerNight,
                 txtDestination, dtpDeparture, txtNights, txtCostPerPerson, txtNumberOfPeople, chkHasWiFi, txtSurcharges,
-                lblTotalCost, lblPricePerNight,
                 btnSave, btnCancel
             });
 
