@@ -1,6 +1,6 @@
 using HotToursManager.Services.Contracts;
 
-namespace HotToursManager.Desktop
+namespace HotToursManager.Desktop.Forms
 {
     /// <summary>
     /// Главная форма приложения для управления турами.

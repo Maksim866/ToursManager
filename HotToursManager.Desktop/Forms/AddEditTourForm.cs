@@ -3,7 +3,7 @@ using HotToursManager.Desktop.Helpers;
 using HotToursManager.Models;
 using HotToursManager.Services.Contracts;
 
-namespace HotToursManager.Desktop
+namespace HotToursManager.Desktop.Forms
 {
     /// <summary>
     /// Форма для добавления или редактирования тура.
@@ -26,6 +26,7 @@ namespace HotToursManager.Desktop
         private Label lblPricePerNight;
         private Button btnSave;
         private Button btnCancel;
+        private bool isFormValid = false;
 
         /// <summary>
         /// Создаёт экземпляр формы.
@@ -254,9 +255,20 @@ namespace HotToursManager.Desktop
                 errorProvider.SetError(txtSurcharges, "");
                 currentTour.Surcharges = surcharges;
             }
-            currentTour.HasWiFi = chkHasWiFi.Checked;
-            currentTour.DepartureDate = dtpDeparture.Value;
-            UpdateCostDisplays();
+
+            isFormValid = isValid;
+            btnSave.Enabled = isFormValid;
+
+            if (isValid)
+            {
+                currentTour.Destination = txtDestination.Text;
+                currentTour.DepartureDate = dtpDeparture.Value;
+                currentTour.CostPerPerson = decimal.Parse(txtCostPerPerson.Text);
+                currentTour.NumberOfPeople = int.Parse(txtNumberOfPeople.Text);
+                currentTour.HasWiFi = chkHasWiFi.Checked;
+                currentTour.Surcharges = decimal.Parse(txtSurcharges.Text);
+                UpdateCostDisplays();
+            }
         }
         private void UpdateCostDisplays()
         {

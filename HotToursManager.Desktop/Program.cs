@@ -1,7 +1,7 @@
 using HotToursManager.Services;
 using HotToursManager.Storage.InMemory;
 
-namespace HotToursManager.Desktop
+namespace HotToursManager.Desktop.Forms
 {
     /// <summary>
     /// Главный класс программы, содержащий точку входа в приложение.

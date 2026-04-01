@@ -1,4 +1,4 @@
-namespace HotToursManager.Desktop
+namespace HotToursManager.Desktop.Forms
 {
     partial class MainForm
     {
