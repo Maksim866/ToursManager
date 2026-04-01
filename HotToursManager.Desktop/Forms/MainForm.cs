@@ -179,10 +179,10 @@ namespace HotToursManager.Desktop.Forms
             }
             var ratio = Math.Min(1f, (float)totalCost / (float)maxTotalCost);
 
-            int leftPad = 4;
-            int rightPad = 8;
-            int topPad = 3;
-            int bottomPad = 3;
+            var leftPad = 4;
+            var rightPad = 8;
+            var topPad = 3;
+            var bottomPad = 3;
 
             var availableWidth = e.CellBounds.Width - leftPad - rightPad;
             var fillWidth = (int)(availableWidth * ratio);

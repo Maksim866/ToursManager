@@ -285,7 +285,6 @@ namespace HotToursManager.Desktop.Forms
                 decimal.Parse(txtSurcharges.Text),
                 dtpDeparture.Value,
                 editingId,
-                txtDestination, txtNights, txtCostPerPerson, txtNumberOfPeople, txtSurcharges, dtpDeparture,
                 out var errorMessage))
             {
                 TourFormMapper.SaveFormToTour(

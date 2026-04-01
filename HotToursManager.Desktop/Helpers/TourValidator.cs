@@ -18,53 +18,41 @@ namespace HotToursManager.Desktop.Helpers
             decimal surcharges,
             DateTime departureDate,
             int? editingId,
-            TextBox destinationBox,
-            TextBox nightsBox,
-            TextBox costBox,
-            TextBox peopleBox,
-            TextBox surchargesBox,
-            DateTimePicker datePicker,
             out string errorMessage)
         {
             if (string.IsNullOrWhiteSpace(destination))
             {
-                errorMessage = "Заполните направление";
-                destinationBox.Focus();
+                errorMessage = "Направление не может быть пустым.";
                 return false;
             }
 
             if (nights < TourLimits.MinNights || nights > TourLimits.MaxNights)
             {
-                errorMessage = "Количество ночей должно быть от 1 до 99";
-                nightsBox.Focus();
+                errorMessage = $"Количество ночей должно быть от {TourLimits.MinNights} до {TourLimits.MaxNights}.";
                 return false;
             }
 
             if (costPerPerson < TourLimits.MinCostPerPerson || costPerPerson > TourLimits.MaxCostPerPerson)
             {
-                errorMessage = "Стоимость должна быть от 1000 до 500000 рублей";
-                costBox.Focus();
+                errorMessage = $"Стоимость должна быть от {TourLimits.MinCostPerPerson:N0} до {TourLimits.MaxCostPerPerson:N0} рублей.";
                 return false;
             }
 
             if (numberOfPeople < TourLimits.MinPeople || numberOfPeople > TourLimits.MaxPeople)
             {
-                errorMessage = "Количество отдыхающих должно быть от 1 до 5";
-                peopleBox.Focus();
+                errorMessage = $"Количество отдыхающих должно быть от {TourLimits.MinPeople} до {TourLimits.MaxPeople}.";
                 return false;
             }
 
             if (surcharges < TourLimits.MinSurcharge || surcharges > TourLimits.MaxSurcharge)
             {
-                errorMessage = "Доплата должна быть от 0 до 100000 рублей";
-                surchargesBox.Focus();
+                errorMessage = $"Доплата должна быть от {TourLimits.MinSurcharge:N0} до {TourLimits.MaxSurcharge:N0} рублей.";
                 return false;
             }
 
             if (departureDate.Date < DateTime.Today.Date && editingId.HasValue == false)
             {
-                errorMessage = "Дата вылета не может быть в прошлом";
-                datePicker.Focus();
+                errorMessage = "Дата вылета не может быть в прошлом (для нового тура).";
                 return false;
             }
 
