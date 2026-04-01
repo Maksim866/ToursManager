@@ -44,5 +44,53 @@ namespace HotToursManager.Desktop.Constants
         /// Максимальная сумма доплат (в рублях).
         /// </summary>
         public const decimal MaxSurcharge = 100_000m;
+
+        /// <summary>
+        /// Проверяет, что количество ночей в допустимом диапазоне.
+        /// </summary>
+        public static bool IsValidNights(int nights) =>
+            nights >= MinNights && nights <= MaxNights;
+
+        /// <summary>
+        /// Проверяет, что количество отдыхающих в допустимом диапазоне.
+        /// </summary>
+        public static bool IsValidPeople(int people) =>
+            people >= MinPeople && people <= MaxPeople;
+
+        /// <summary>
+        /// Проверяет, что стоимость за одного отдыхающего в допустимом диапазоне.
+        /// </summary>
+        public static bool IsValidCostPerPerson(decimal cost) =>
+            cost >= MinCostPerPerson && cost <= MaxCostPerPerson;
+
+        /// <summary>
+        /// Проверяет, что сумма доплат в допустимом диапазоне.
+        /// </summary>
+        public static bool IsValidSurcharge(decimal surcharge) =>
+            surcharge >= MinSurcharge && surcharge <= MaxSurcharge;
+
+        /// <summary>
+        /// Возвращает сообщение об ошибке для недопустимого количества ночей.
+        /// </summary>
+        public static string GetNightsError() =>
+            $"Количество ночей должно быть от {MinNights} до {MaxNights}.";
+
+        /// <summary>
+        /// Возвращает сообщение об ошибке для недопустимого количества отдыхающих
+        /// </summary>
+        public static string GetPeopleError() =>
+            $"Количество отдыхающих должно быть от {MinPeople} до {MaxPeople}.";
+
+        /// <summary>
+        /// Возвращает сообщение об ошибке для недопустимой стоимости за человека.
+        /// </summary>
+        public static string GetCostError() =>
+            $"Стоимость за чел. должна быть от {MinCostPerPerson:N0} до {MaxCostPerPerson:N0} руб.";
+
+        /// <summary>
+        /// Возвращает сообщение об ошибке для недопустимой суммы доплат.
+        /// </summary>
+        public static string GetSurchargeError() =>
+            $"Доплата должна быть от {MinSurcharge:N0} до {MaxSurcharge:N0} руб.";
     }
 }

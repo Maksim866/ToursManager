@@ -204,11 +204,14 @@ namespace HotToursManager.Desktop.Forms
                 currentTour.Destination = txtDestination.Text;
             }
 
-            if (!int.TryParse(txtNights.Text, out var nights) ||
-                nights < TourLimits.MinNights ||
-                nights > TourLimits.MaxNights)
+            if (!int.TryParse(txtNights.Text, out var nights))
             {
-                errorProvider.SetError(txtNights, $"Введите число от {TourLimits.MinNights} до {TourLimits.MaxNights}");
+                errorProvider.SetError(txtNights, "Введите целое число");
+                isValid = false;
+            }
+            else if (!TourLimits.IsValidNights(nights))
+            {
+                errorProvider.SetError(txtNights, TourLimits.GetNightsError());
                 isValid = false;
             }
             else
@@ -217,11 +220,14 @@ namespace HotToursManager.Desktop.Forms
                 currentTour.Nights = nights;
             }
 
-            if (!decimal.TryParse(txtCostPerPerson.Text, out var costPerPerson) ||
-                costPerPerson < TourLimits.MinCostPerPerson ||
-                costPerPerson > TourLimits.MaxCostPerPerson)
+            if (!decimal.TryParse(txtCostPerPerson.Text, out var costPerPerson))
             {
-                errorProvider.SetError(txtCostPerPerson, $"Введите число от {TourLimits.MinCostPerPerson:N0} до {TourLimits.MaxCostPerPerson:N0}");
+                errorProvider.SetError(txtCostPerPerson, "Введите число");
+                isValid = false;
+            }
+            else if (!TourLimits.IsValidCostPerPerson(costPerPerson))
+            {
+                errorProvider.SetError(txtCostPerPerson, TourLimits.GetCostError());
                 isValid = false;
             }
             else
@@ -230,11 +236,14 @@ namespace HotToursManager.Desktop.Forms
                 currentTour.CostPerPerson = costPerPerson;
             }
 
-            if (!int.TryParse(txtNumberOfPeople.Text, out var numberOfPeople) ||
-                numberOfPeople < TourLimits.MinPeople ||
-                numberOfPeople > TourLimits.MaxPeople)
+            if (!int.TryParse(txtNumberOfPeople.Text, out var numberOfPeople))
             {
-                errorProvider.SetError(txtNumberOfPeople, $"Введите число от {TourLimits.MinPeople} до {TourLimits.MaxPeople}");
+                errorProvider.SetError(txtNumberOfPeople, "Введите целое число");
+                isValid = false;
+            }
+            else if (!TourLimits.IsValidPeople(numberOfPeople))
+            {
+                errorProvider.SetError(txtNumberOfPeople, TourLimits.GetPeopleError());
                 isValid = false;
             }
             else
@@ -243,11 +252,14 @@ namespace HotToursManager.Desktop.Forms
                 currentTour.NumberOfPeople = numberOfPeople;
             }
 
-            if (!decimal.TryParse(txtSurcharges.Text, out var surcharges) ||
-                surcharges < TourLimits.MinSurcharge ||
-                surcharges > TourLimits.MaxSurcharge)
+            if (!decimal.TryParse(txtSurcharges.Text, out var surcharges))
             {
-                errorProvider.SetError(txtSurcharges, $"Введите число от {TourLimits.MinSurcharge:N0} до {TourLimits.MaxSurcharge:N0}");
+                errorProvider.SetError(txtSurcharges, "Введите число");
+                isValid = false;
+            }
+            else if (!TourLimits.IsValidSurcharge(surcharges))
+            {
+                errorProvider.SetError(txtSurcharges, TourLimits.GetSurchargeError());
                 isValid = false;
             }
             else
