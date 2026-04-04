@@ -1,47 +1,32 @@
-using HotToursManager.Models;
 using HotToursManager.Services.Contracts;
 
-namespace HotToursManager.Desktop
+namespace HotToursManager.Desktop.Forms
 {
     /// <summary>
-    /// Главная форма приложения для управления горячими турами
+    /// Главная форма приложения для управления турами.
     /// </summary>
     public partial class MainForm : Form
     {
         private readonly ITourService service;
         private DataGridView dataGridView1;
-        private Label lblStats;
-        private decimal maxTotalCost = 1;
+        private decimal maxTotalCost = 1; // для пропорциональной заливки
+
         /// <summary>
-        /// Создаёт главную форму с указанным сервисом
+        /// Создаёт экземпляр формы.
         /// </summary>
         public MainForm(ITourService service)
         {
             InitializeComponent();
             this.service = service;
-            dataGridView1.Dock = DockStyle.Fill;
-            lblStats = new Label
-            {
-                Dock = DockStyle.Bottom,
-                Height = 48,
-                Padding = new Padding(10),
-                Font = new System.Drawing.Font("Segoe UI", 9F),
-                TextAlign = ContentAlignment.MiddleLeft,
-                BackColor = System.Drawing.Color.LightGray,
-                ForeColor = System.Drawing.Color.Black,
-                AutoSize = false
-            };
-            this.Controls.Add(lblStats);
 
-            SetupGrid();
             dataGridView1.CellPainting += DataGridView1_CellPainting;
-            dataGridView1.ReadOnly = true;
+            dataGridView1.Dock = DockStyle.Fill;
+
             RefreshGrid();
             UpdateStats();
         }
         private void RefreshGrid()
         {
-            // Устанавливаем DataSource → это запустит AutoGenerateColumns
             dataGridView1.DataSource = null;
             dataGridView1.DataSource = service.GetAllTours();
 
@@ -51,8 +36,10 @@ namespace HotToursManager.Desktop
 
             SetupGrid();
         }
+
         private void SetupGrid()
         {
+            // Настройка заголовков и форматов
             foreach (DataGridViewColumn col in dataGridView1.Columns)
             {
                 switch (col.DataPropertyName)
@@ -102,14 +89,81 @@ namespace HotToursManager.Desktop
                         col.Width = 120;
                         ((DataGridViewTextBoxColumn)col).DefaultCellStyle.Format = "N2";
                         break;
-
                 }
             }
         }
+
+        private void UpdateStats()
+        {
+            var stats = service.GetStatistics();
+            label1.Text = $"Общее количество туров: {stats.TotalTours} | " +
+                          $"Общая сумма за все туры: {stats.TotalCost:N0} ₽ | " +
+                          $"Количество туров с доплатами: {stats.ToursWithSurcharges} | " +
+                          $"Общая сумма доплат.: {stats.TotalSurcharges:N0} ₽";
+        }
+
+        private void btnAdd_Click_1(object sender, EventArgs e)
+        {
+            var form = new AddEditTourForm(service, null);
+            if (form.ShowDialog() == DialogResult.OK)
+            {
+                RefreshGrid();
+                UpdateStats();
+            }
+        }
+
+        private void btnEdit_Click_1(object sender, EventArgs e)
+        {
+            if (dataGridView1.SelectedRows.Count > 0)
+            {
+                var id = (int)dataGridView1.SelectedRows[0].Cells["Id"].Value;
+                var form = new AddEditTourForm(service, id);
+                if (form.ShowDialog() == DialogResult.OK)
+                {
+                    RefreshGrid();
+                    UpdateStats();
+                }
+            }
+            else
+            {
+                MessageBox.Show(
+                    "Выберите тур для редактирования",
+                    "Внимание",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+            }
+        }
+
+        private void btnDelete_Click_1(object sender, EventArgs e)
+        {
+            if (dataGridView1.SelectedRows.Count > 0)
+            {
+                var id = (int)dataGridView1.SelectedRows[0].Cells["Id"].Value;
+                var result = MessageBox.Show(
+                    "Удалить выбранный тур?",
+                    "Подтверждение",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
+
+                if (result == DialogResult.Yes)
+                {
+                    service.DeleteTour(id);
+                    RefreshGrid();
+                    UpdateStats();
+                }
+            }
+            else
+            {
+                MessageBox.Show(
+                    "Выберите тур для удаления",
+                    "Внимание",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+            }
+        }
+
         private void DataGridView1_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
         {
-            // Применяем только к колонке "TotalCost"
-            // Защита от некорректных индексов
             if (e.RowIndex < 0 || e.ColumnIndex < 0 || e.ColumnIndex >= dataGridView1.Columns.Count)
             {
                 return;
@@ -123,17 +177,15 @@ namespace HotToursManager.Desktop
             {
                 return;
             }
-            // Пропорция: сколько процентов от max
-            float ratio = Math.Min(1f, (float)totalCost / (float)maxTotalCost);
+            var ratio = Math.Min(1f, (float)totalCost / (float)maxTotalCost);
 
-            // Внутренний прямоугольник с отступами
-            int leftPad = 4;
-            int topPad = 2;
-            int rightPad = 2;
-            int bottomPad = 2;
+            var leftPad = 4;
+            var rightPad = 8;
+            var topPad = 3;
+            var bottomPad = 3;
 
-            int availableWidth = e.CellBounds.Width - leftPad - rightPad;
-            int fillWidth = (int)(availableWidth * ratio);
+            var availableWidth = e.CellBounds.Width - leftPad - rightPad;
+            var fillWidth = (int)(availableWidth * ratio);
             if (fillWidth < 0)
             {
                 fillWidth = 0;
@@ -144,19 +196,19 @@ namespace HotToursManager.Desktop
                 fillWidth,
                 e.CellBounds.Height - topPad - bottomPad
             );
-            // Определяем цвет по диапазонам
+
             Color barColor;
             if (totalCost <= 500_000)
             {
-                barColor = Color.FromArgb(100, 200, 150);   // мягкий зелёный
+                barColor = Color.FromArgb(100, 200, 150);   // зелёный
             }
             else if (totalCost <= 1_000_000)
             {
-                barColor = Color.FromArgb(80, 180, 240);    // небесный синий
+                barColor = Color.FromArgb(80, 180, 240);    // синий
             }
             else if (totalCost <= 1_500_000)
             {
-                barColor = Color.FromArgb(255, 180, 80);    // тёплый оранжевый
+                barColor = Color.FromArgb(255, 180, 80);    // оранжевый
             }
             else if (totalCost <= 2_000_000)
             {
@@ -164,24 +216,14 @@ namespace HotToursManager.Desktop
             }
             else
             {
-                barColor = Color.FromArgb(244, 67, 54);    // красный (люкс)
+                barColor = Color.FromArgb(244, 67, 54);    // красный
             }
-            // Рисуем фон ячейки (оставляем текст)
-            e.PaintBackground(e.CellBounds, true);
 
+            e.PaintBackground(e.CellBounds, true);
             using var brush = new SolidBrush(barColor);
             e.Graphics.FillRectangle(brush, fillRect);
-
-            // Рисуем текст поверх
             e.PaintContent(e.CellBounds);
-
             e.Handled = true;
-        }
-        private void UpdateStats()
-        {
-            var stats = service.GetStatistics();
-            lblStats.Text = $"Всего туров: {stats.TotalTours}, Общая сумма: {stats.TotalCost:N2} ₽, " +
-                            $"Туры с доплатами: {stats.ToursWithSurcharges}, Сумма доплат: {stats.TotalSurcharges:N2} ₽";
         }
     }
 }
