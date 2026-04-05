@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\HotToursManager.Models\HotToursManager.Models.csproj" />
     <ProjectReference Include="..\HotToursManager.Storage.Contracts\HotToursManager.Storage.Contracts.csproj" />
   </ItemGroup>
 

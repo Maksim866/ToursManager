@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\HotToursManager.Models\HotToursManager.Models.csproj" />
     <ProjectReference Include="..\HotToursManager.Services.Contracts\HotToursManager.Services.Contracts.csproj" />
     <ProjectReference Include="..\HotToursManager.Storage.Contracts\HotToursManager.Storage.Contracts.csproj" />
     <ProjectReference Include="..\HotToursManager.Storage.InMemory\HotToursManager.Storage.InMemory.csproj" />

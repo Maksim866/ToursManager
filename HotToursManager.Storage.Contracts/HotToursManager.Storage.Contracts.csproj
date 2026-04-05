@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\HotToursManager.Models\HotToursManager.Models.csproj" />
+    <PackageReference Include="HotToursManager.Models" Version="1.0.1" />
   </ItemGroup>
 
 </Project>
