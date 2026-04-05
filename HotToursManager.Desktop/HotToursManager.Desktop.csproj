@@ -9,8 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\HotToursManager.Services.Contracts\HotToursManager.Services.Contracts.csproj" />
     <ProjectReference Include="..\HotToursManager.Services\HotToursManager.Services.csproj" />
+    <ProjectReference Include="..\HotToursManager.Storage.InMemory\HotToursManager.Storage.InMemory.csproj" />
   </ItemGroup>
 
 </Project>

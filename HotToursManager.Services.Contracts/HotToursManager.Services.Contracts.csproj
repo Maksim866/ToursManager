@@ -4,8 +4,20 @@
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <PackageId>HotToursManager.Services.Contracts</PackageId>
+    <Authors>Maksim866</Authors>
+    <Product>HotTours Manager Services Contracts</Product>
+    <Description>Контракты сервисов для HotToursManager: интерфейсы, DTO и прочее.</Description>
+    <Version>1.0.0</Version>
+    <PackageTags>tours;services;contracts;interfaces</PackageTags>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
-
+  <ItemGroup>
+    <None Include="icon.png" Pack="true" PackagePath="" />
+    <None Include="README.md" Pack="true" PackagePath="" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="HotToursManager.Models" Version="1.0.1" />
   </ItemGroup>
