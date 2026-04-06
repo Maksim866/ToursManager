@@ -2,7 +2,7 @@ ToursManager
 
 Калинкин Максим Леонидович
 
-t.me/Jarvis570
+https://t.me/Jarvis570
 
 ИП-24-4
 
