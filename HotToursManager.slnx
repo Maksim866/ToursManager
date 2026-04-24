@@ -1,10 +1,12 @@
 <Solution>
   <Folder Name="/BL/">
     <Project Path="HotToursManager.Services.Contracts/HotToursManager.Services.Contracts.csproj" Id="f0ed36ff-9e29-44e5-a854-55fdfc5789da" />
+    <Project Path="HotToursManager.Services.Tests/HotToursManager.Services.Tests.csproj" Id="78afd7fa-93f3-405d-b000-56e995926df3" />
     <Project Path="HotToursManager.Services/HotToursManager.Services.csproj" Id="31d3cfb6-568f-4437-b825-568937e6d5d7" />
   </Folder>
   <Folder Name="/DAL/">
     <Project Path="HotToursManager.Storage.Contracts/HotToursManager.Storage.Contracts.csproj" Id="ee921aec-a3e5-4746-9663-7a36a78812f6" />
+    <Project Path="HotToursManager.Storage.InMemory.Tests/HotToursManager.Storage.InMemory.Tests.csproj" Id="6d5a6be6-fbf8-4f0b-a613-33d1fdb12dc1" />
     <Project Path="HotToursManager.Storage.InMemory/HotToursManager.Storage.InMemory.csproj" Id="8371997d-e6fd-4dd1-9372-c4c2602457fb" />
   </Folder>
   <Folder Name="/Solution Items/">
