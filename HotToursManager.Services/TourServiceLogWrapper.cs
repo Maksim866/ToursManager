@@ -47,7 +47,7 @@ namespace HotToursManager.Services
         /// </summary>
         public void AddTour(Tour tour)
         {
-            var watch = Stopwatch.StartNew();
+            var watch = new Stopwatch();
             watch.Start();
 
             mainService.AddTour(tour);
@@ -92,7 +92,7 @@ namespace HotToursManager.Services
 
             watch.Stop();
             logger.LogDebug(
-                    "TourService.DeleteTour: {ElapsedMilliseconds} ms. id: {id}",
+                    "TourService.DeleteTour: {ElapsedMilliseconds} ms. Id: {Id}",
                      watch.ElapsedMilliseconds,
                      id);
         }
@@ -134,7 +134,7 @@ namespace HotToursManager.Services
             var totalSurcharges = result != null ? result.TotalSurcharges : 0;
 
             logger.LogDebug(
-                    "TourServuce.GetStatistics: {ElapsedMilliseconds} ms. TotalTours: {TotalTours}, TotalCost: {TotalCost}," +
+                    "TourService.GetStatistics: {ElapsedMilliseconds} ms. TotalTours: {TotalTours}, TotalCost: {TotalCost}," +
                     " ToursWithSurcharges: {ToursWithSurcharges}, TotalSurcharges: {TotalSurcharges}",
                     watch.ElapsedMilliseconds,
                     totalTours,
