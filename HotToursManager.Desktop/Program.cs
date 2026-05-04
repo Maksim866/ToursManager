@@ -17,9 +17,16 @@ namespace HotToursManager.Desktop.Forms
         [STAThread]
         static void Main()
         {
+            var seqApiKey = "X679FRs1i5apzr7iEfyg";
+
             var serilogLogger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
                 .WriteTo.Debug()
+                .WriteTo.Seq(
+                        serverUrl: "http://localhost:5341",
+                        apiKey: seqApiKey,
+                        restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Debug
+                )
                 .WriteTo.File("logs/tour-perf-.log", rollingInterval: RollingInterval.Day)
                 .CreateLogger();
 
