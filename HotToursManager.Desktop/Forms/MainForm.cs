@@ -27,11 +27,12 @@ namespace HotToursManager.Desktop.Forms
         }
         private void RefreshGrid()
         {
+            var tours = service.GetAllTours();
+
             dataGridView1.DataSource = null;
-            dataGridView1.DataSource = service.GetAllTours();
+            dataGridView1.DataSource = tours;
 
             // Обновляем максимум для пропорциональной заливки
-            var tours = service.GetAllTours();
             maxTotalCost = tours.Any() ? tours.Max(t => t.TotalCost) : 1;
 
             SetupGrid();

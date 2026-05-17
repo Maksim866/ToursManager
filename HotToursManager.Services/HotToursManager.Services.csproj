@@ -9,6 +9,7 @@
   <ItemGroup>
     <PackageReference Include="HotToursManager.Services.Contracts" Version="1.0.0" />
     <PackageReference Include="HotToursManager.Storage.Contracts" Version="1.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.7" />
   </ItemGroup>
 
 </Project>
