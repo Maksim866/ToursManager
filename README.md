@@ -5,7 +5,6 @@
 Задание: DataGridView
 
 Вариант: 4 - горящие туры
-Создал unit-тесты для HotToursManager.Services и HotToursManager.Storage.InMemory с использованием xUnit, FluentAssertions и Moq, добившись 100% покрытия кода.
 
 # upd:04.05.2026
 
