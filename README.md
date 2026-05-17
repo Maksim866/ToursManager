@@ -1,10 +1,15 @@
-Калинкин Максим Леонидович
+Калинкин Максим Леонидович  https://t.me/Jarvis570
 
 ИП-24-4
 
 Задание: DataGridView
 
 Вариант: 4 - горящие туры
+
+# upd:25.04.2026
+Задание: Написание unit тестов
+
+Написал юнит тесты к HotToursManager.Services и HotToursManfger.Storage.InMemory, с использованием FluentAssertions и Moq
 
 # upd:04.05.2026
 
