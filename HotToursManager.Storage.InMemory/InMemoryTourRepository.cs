@@ -17,9 +17,9 @@ namespace HotToursManager.Storage.InMemory
         {
             SeedInitialData();
         }
-        private void SeedInitialData()
+        private async Task SeedInitialData()
         {
-            Add(new Tour
+            await AddAsync(new Tour
             {
                 Destination = "Турция",
                 DepartureDate = new DateTime(2024, 6, 15),
@@ -30,7 +30,7 @@ namespace HotToursManager.Storage.InMemory
                 Surcharges = 1500,
             });
 
-            Add(new Tour
+            await AddAsync(new Tour
             {
                 Destination = "Испания",
                 DepartureDate = new DateTime(2024, 7, 20),
@@ -41,7 +41,7 @@ namespace HotToursManager.Storage.InMemory
                 Surcharges = 2300,
             });
 
-            Add(new Tour
+            await AddAsync(new Tour
             {
                 Destination = "Италия",
                 DepartureDate = new DateTime(2024, 8, 5),
@@ -52,7 +52,7 @@ namespace HotToursManager.Storage.InMemory
                 Surcharges = 0
             });
 
-            Add(new Tour
+            await AddAsync(new Tour
             {
                 Destination = "Франция",
                 DepartureDate = new DateTime(2024, 9, 10),
@@ -63,7 +63,7 @@ namespace HotToursManager.Storage.InMemory
                 Surcharges = 800
             });
 
-            Add(new Tour
+            await AddAsync(new Tour
             {
                 Destination = "Шушары",
                 DepartureDate = new DateTime(2024, 10, 1),

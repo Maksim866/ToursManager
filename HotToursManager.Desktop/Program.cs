@@ -1,7 +1,6 @@
 using HotToursManager.Services;
 using HotToursManager.Storage.MsSql;
 using Microsoft.Extensions.Logging;
-using Microsoft.VisualBasic.Logging;
 using Serilog;
 using Serilog.Extensions.Logging;
 

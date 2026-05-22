@@ -42,10 +42,9 @@ namespace HotToursManager.Desktop.Forms
             // 
             dataGridView1.Location = new Point(0, 46);
             dataGridView1.Name = "dataGridView1";
-            dataGridView1.ReadOnly = true;
             dataGridView1.Size = new Size(800, 413);
             dataGridView1.TabIndex = 0;
-            dataGridView1.CellContentClick += dataGridView1_CellContentClick;
+            dataGridView1.ReadOnly = true;
             // 
             // panel1
             // 
