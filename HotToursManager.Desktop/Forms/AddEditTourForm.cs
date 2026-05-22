@@ -43,7 +43,7 @@ namespace HotToursManager.Desktop.Forms
             if (id.HasValue)
             {
                 this.Text = "Редактирование тура";
-                var existingTour = tourService.GetTourById(id.Value);
+                var existingTour = tourService.GetTourByIdAsync(id.Value).GetAwaiter().GetResult();
                 if (existingTour != null)
                 {
                     currentTour = existingTour;

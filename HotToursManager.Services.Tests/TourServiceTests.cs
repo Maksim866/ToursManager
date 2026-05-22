@@ -27,7 +27,7 @@ namespace HotToursManager.Services.Tests
         /// Проверяет, что GetAllTours возвращает список всех туров из репозитория
         /// </summary>
         [Fact]
-        public void GetAllTours_ReturnsAllTours()
+        public async Task GetAllTours_ReturnsAllTours()
         {
             //Arrange
             var expectedTours = new List<Tour>
@@ -56,27 +56,27 @@ namespace HotToursManager.Services.Tests
                     Surcharges = 2300
                 }
             };
-            mockRepo.Setup(r => r.GetAll()).Returns(expectedTours);
+            mockRepo.Setup(r => r.GetAllAsync()).ReturnsAsync(expectedTours);
             //Act
-            var result = service.GetAllTours();
+            var result = await service.GetAllToursAsync();
             //Assert
             result.Should().BeEquivalentTo(expectedTours);
-            mockRepo.Verify(r => r.GetAll(), Times.Once);
+            mockRepo.Verify(r => r.GetAllAsync(), Times.Once);
         }
 
         /// <summary>
         /// Проверяет, что GetAllTours возвращает пустой список, если репозиторий пуст
         /// </summary>
         [Fact]
-        public void GetAllTours_EmptyRepository_ReturnsEmptyList()
+        public async Task GetAllTours_EmptyRepository_ReturnsEmptyList()
         {
             //Arrange
-            mockRepo.Setup(r => r.GetAll()).Returns(new List<Tour>());
+            mockRepo.Setup(r => r.GetAllAsync()).ReturnsAsync(new List<Tour>());
             //Act
-            var result = service.GetAllTours();
+            var result = await service.GetAllToursAsync();
             //Assert
             result.Should().BeEmpty();
-            mockRepo.Verify(r => r.GetAll(), Times.Once);
+            mockRepo.Verify(r => r.GetAllAsync(), Times.Once);
         }
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace HotToursManager.Services.Tests
         ///Проверяет, что UpdateTour передает обновленный тур в репозиторий
         /// </summary>
         [Fact]
-        public void UpdateTour_DelegatesToRepository()
+        public async Task UpdateTour_DelegatesToRepository()
         {
             //Arrange
             var tour = new Tour
@@ -122,30 +122,30 @@ namespace HotToursManager.Services.Tests
                 Surcharges = 800m
             };
             //Act
-            service.UpdateTour(tour);
+            await service.UpdateTourAsync(tour);
             //Assert
-            mockRepo.Verify(r => r.Update(tour), Times.Once);
+            mockRepo.Verify(r => r.UpdateAsync(tour), Times.Once);
         }
 
         /// <summary>
         /// Проверяет, что DeleteTour вызывает удаление в репозитории по ID
         /// </summary>
         [Fact]
-        public void DeleteTour_DelegatesToRepository()
+        public async Task DeleteTour_DelegatesToRepository()
         {
             //Arrange
             const int tourId = 3;
             //Act
-            service.DeleteTour(tourId);
+            await service.DeleteTourAsync(tourId);
             //Assert
-            mockRepo.Verify(r => r.Delete(tourId), Times.Once);
+            mockRepo.Verify(r => r.DeleteAsync(tourId), Times.Once);
         }
 
         /// <summary>
         /// Проверяет, что GetTourById возвращает тур при наличии в репозитории
         /// </summary>
         [Fact]
-        public void GetTourById_Existing_ReturnsTour()
+        public async Task GetTourById_Existing_ReturnsTour()
         {
             //Arrange
             const int id = 1;
@@ -160,36 +160,36 @@ namespace HotToursManager.Services.Tests
                 HasWiFi = true,
                 Surcharges = 1500
             };
-            mockRepo.Setup(r => r.GetById(id)).Returns(expectedTour);
+            mockRepo.Setup(r => r.GetByIdAsync(id)).ReturnsAsync(expectedTour);
             //Act
-            var result = service.GetTourById(id);
+            var result = await service.GetTourByIdAsync(id);
             //Assert
             result.Should().NotBeNull();
             result.Should().BeEquivalentTo(expectedTour);
-            mockRepo.Verify(r => r.GetById(id), Times.Once);
+            mockRepo.Verify(r => r.GetByIdAsync(id), Times.Once);
         }
 
         /// <summary>
         /// Проверяет, что GetTourById возвращает null при отсутствии тура в репозитории
         /// </summary>
         [Fact]
-        public void GetTourById_NonExisting_ReturnsNull()
+        public async Task GetTourById_NonExisting_ReturnsNull()
         {
             //Arrange
             const int id = 999;
-            mockRepo.Setup(r => r.GetById(id)).Returns((Tour)null);
+            mockRepo.Setup(r => r.GetByIdAsync(id)).ReturnsAsync((Tour)null);
             //Act
-            var result = service.GetTourById(id);
+            var result = await service.GetTourByIdAsync(id);
             //Assert
             result.Should().BeNull();
-            mockRepo.Verify(r => r.GetById(id), Times.Once);
+            mockRepo.Verify(r => r.GetByIdAsync(id), Times.Once);
         }
 
         /// <summary>
         /// Проверяет корректность расчёта статистики по списку туров
         /// </summary>
         [Fact]
-        public void GetStatistics_CalculatesCorrectly()
+        public async Task GetStatistics_CalculatesCorrectly()
         {
             //Arrange
             var tours = new List<Tour>
@@ -228,7 +228,7 @@ namespace HotToursManager.Services.Tests
                     Surcharges = 1000m
                 }
             };
-            mockRepo.Setup(r => r.GetAll()).Returns(tours);
+            mockRepo.Setup(r => r.GetAllAsync()).ReturnsAsync(tours);
 
             var tour1Cost = ((10000m * 2) + 500m) * 5;
             var tour2Cost = ((20000m * 1) + 0m) * 10;
@@ -239,31 +239,31 @@ namespace HotToursManager.Services.Tests
             var expectedToursWithSurcharges = 2;
             var expectedTotalSurcharges = 500m + 0m + 1000m;
             //Act
-            var stats = service.GetStatistics();
+            var stats = await service.GetStatisticsAsync();
             //Assert
             stats.TotalTours.Should().Be(expectedTotalTours);
             stats.TotalCost.Should().Be(expectedTotalCost);
             stats.ToursWithSurcharges.Should().Be(expectedToursWithSurcharges);
             stats.TotalSurcharges.Should().Be(expectedTotalSurcharges);
-            mockRepo.Verify(r => r.GetAll(), Times.Once());
+            mockRepo.Verify(r => r.GetAllAsync(), Times.Once());
         }
 
         /// <summary>
         /// Проверяет, что статистика возвращает нули при пустом репозитории
         /// </summary>
         [Fact]
-        public void GetStatistics_EmptyRepository_ReturnsZero()
+        public async Task GetStatistics_EmptyRepository_ReturnsZero()
         {
             //Arrange
-            mockRepo.Setup(r => r.GetAll()).Returns(new List<Tour>());
+            mockRepo.Setup(r => r.GetAllAsync()).ReturnsAsync(new List<Tour>());
             //Act
-            var stats = service.GetStatistics();
+            var stats = await service.GetStatisticsAsync();
             //Assert
             stats.TotalTours.Should().Be(0);
             stats.TotalCost.Should().Be(0);
             stats.ToursWithSurcharges.Should().Be(0);
             stats.TotalSurcharges.Should().Be(0);
-            mockRepo.Verify(r => r.GetAll(), Times.Once());
+            mockRepo.Verify(r => r.GetAllAsync(), Times.Once());
         }
     }
 }

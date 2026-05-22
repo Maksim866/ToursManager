@@ -8,71 +8,65 @@ namespace HotToursManager.Storage.InMemory
     /// </summary>
     public class InMemoryTourRepository : ITourRepository
     {
-        private List<Tour> tours = new();
+        private readonly List<Tour> tours;
         private int nextId = 1;
         /// <summary>
         /// Инициализирует репозиторий начальными данными
         /// </summary>
         public InMemoryTourRepository()
         {
-            SeedInitialData();
+            tours = SeedInitialData();
         }
-        private void SeedInitialData()
+        private static List<Tour> SeedInitialData()
         {
-            AddAsync(new Tour
-            {
-                Destination = "Турция",
-                DepartureDate = new DateTime(2024, 6, 15),
-                Nights = 7,
-                CostPerPerson = 45000,
-                NumberOfPeople = 2,
-                HasWiFi = true,
-                Surcharges = 1500,
-            }).Wait();
-
-            AddAsync(new Tour
-            {
-                Destination = "Испания",
-                DepartureDate = new DateTime(2024, 7, 20),
-                Nights = 10,
-                CostPerPerson = 62000,
-                NumberOfPeople = 3,
-                HasWiFi = false,
-                Surcharges = 2300,
-            }).Wait();
-
-            AddAsync(new Tour
-            {
-                Destination = "Италия",
-                DepartureDate = new DateTime(2024, 8, 5),
-                Nights = 5,
-                CostPerPerson = 28000,
-                NumberOfPeople = 1,
-                HasWiFi = true,
-                Surcharges = 0
-            }).Wait();
-
-            AddAsync(new Tour
-            {
-                Destination = "Франция",
-                DepartureDate = new DateTime(2024, 9, 10),
-                Nights = 8,
-                CostPerPerson = 35000,
-                NumberOfPeople = 4,
-                HasWiFi = true,
-                Surcharges = 800
-            }).Wait();
-
-            AddAsync(new Tour
-            {
-                Destination = "Шушары",
-                DepartureDate = new DateTime(2024, 10, 1),
-                Nights = 14,
-                CostPerPerson = 89000,
-                NumberOfPeople = 2,
-                HasWiFi = true,
-                Surcharges = 3450
-            }).Wait();
+            return
+            [
+                new() {
+                    Destination = "Турция",
+                    DepartureDate = new DateTime(2024, 6, 15),
+                    Nights = 7,
+                    CostPerPerson = 45000,
+                    NumberOfPeople = 2,
+                    HasWiFi = true,
+                    Surcharges = 1500,
+                },
+                new() {
+                    Destination = "Испания",
+                    DepartureDate = new DateTime(2024, 7, 20),
+                    Nights = 10,
+                    CostPerPerson = 62000,
+                    NumberOfPeople = 3,
+                    HasWiFi = false,
+                    Surcharges = 2300,
+                },
+                new() {
+                    Destination = "Италия",
+                    DepartureDate = new DateTime(2024, 8, 5),
+                    Nights = 5,
+                    CostPerPerson = 28000,
+                    NumberOfPeople = 1,
+                    HasWiFi = true,
+                    Surcharges = 0
+                },
+                new() {
+                    Destination = "Франция",
+                    DepartureDate = new DateTime(2024, 9, 10),
+                    Nights = 8,
+                    CostPerPerson = 35000,
+                    NumberOfPeople = 4,
+                    HasWiFi = true,
+                    Surcharges = 800
+                },
+                new() {
+                    Destination = "Шушары",
+                    DepartureDate = new DateTime(2024, 10, 1),
+                    Nights = 14,
+                    CostPerPerson = 89000,
+                    NumberOfPeople = 2,
+                    HasWiFi = true,
+                    Surcharges = 3450
+                }
+            ];
         }
         /// <summary>
         /// Возвращает все туры из памяти

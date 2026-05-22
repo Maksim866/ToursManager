@@ -141,7 +141,7 @@ namespace HotToursManager.Desktop.Forms
             }
         }
 
-        private async Task btnDelete_Click_1(object sender, EventArgs e)
+        private async void btnDelete_Click_1(object sender, EventArgs e)
         {
             if (dataGridView1.SelectedRows.Count > 0)
             {
