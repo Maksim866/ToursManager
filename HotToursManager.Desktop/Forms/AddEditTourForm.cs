@@ -270,14 +270,14 @@ namespace HotToursManager.Desktop.Forms
                 decimal.Parse(txtCostPerPerson.Text),
                 int.Parse(txtNumberOfPeople.Text),
                 decimal.Parse(txtSurcharges.Text),
-                dtpDeparture.Value,
+                dtpDeparture.Value.ToUniversalTime(),
                 editingId,
                 out var errorMessage))
             {
                 TourFormMapper.SaveFormToTour(
                     currentTour,
                     txtDestination.Text,
-                    dtpDeparture.Value,
+                    dtpDeparture.Value.ToUniversalTime(),
                     int.Parse(txtNights.Text),
                     decimal.Parse(txtCostPerPerson.Text),
                     int.Parse(txtNumberOfPeople.Text),

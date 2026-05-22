@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HotToursManager.Services\HotToursManager.Services.csproj" />
-    <ProjectReference Include="..\HotToursManager.Storage.InMemory\HotToursManager.Storage.InMemory.csproj" />
+    <ProjectReference Include="..\HotToursManager.Storage.MsSql\HotToursManager.Storage.MsSql.csproj" />
   </ItemGroup>
 
 </Project>

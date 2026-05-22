@@ -8,6 +8,7 @@
     <Project Path="HotToursManager.Storage.Contracts/HotToursManager.Storage.Contracts.csproj" Id="ee921aec-a3e5-4746-9663-7a36a78812f6" />
     <Project Path="HotToursManager.Storage.InMemory.Tests/HotToursManager.Storage.InMemory.Tests.csproj" Id="6d5a6be6-fbf8-4f0b-a613-33d1fdb12dc1" />
     <Project Path="HotToursManager.Storage.InMemory/HotToursManager.Storage.InMemory.csproj" Id="8371997d-e6fd-4dd1-9372-c4c2602457fb" />
+    <Project Path="HotToursManager.Storage.MsSql/HotToursManager.Storage.MsSql.csproj" Id="5cfc8c3c-8128-46e2-8fa3-b7d7106f18bb" />
   </Folder>
   <Folder Name="/Solution Items/">
     <File Path=".editorconfig" />

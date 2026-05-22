@@ -12,7 +12,7 @@ namespace HotToursManager.Services.Contracts
         /// <summary>
         /// Добавляет новый тур
         /// </summary>
-        void AddTour(Tour tour);
+        Task AddTourAsync(Tour tour);
 
         /// <summary>
         /// Обновляет тур

@@ -26,6 +26,6 @@ namespace HotToursManager.Storage.Contracts
         /// <summary>
         /// Добавляет новый тур
         /// </summary>
-        void Add(Tour tour);
+        Task AddAsync(Tour tour);
     }
 }

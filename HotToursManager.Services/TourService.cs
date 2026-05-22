@@ -27,7 +27,7 @@ namespace HotToursManager.Services
         /// <summary>
         /// Добавляет тур
         /// </summary>
-        public void AddTour(Tour tour) => repo.Add(tour);
+        public Task AddTourAsync(Tour tour) => repo.AddAsync(tour);
 
         /// <summary>
         /// Обновляет тур

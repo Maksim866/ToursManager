@@ -1,5 +1,8 @@
-using HotToursManager.Services;
-using HotToursManager.Storage.InMemory;
+﻿using HotToursManager.Services;
+using Microsoft.Extensions.Logging;
+using Serilog;
+using Serilog.Extensions.Logging;
+using HotToursManager.Storage.MsSql;
 
 namespace HotToursManager.Desktop.Forms
 {
@@ -18,7 +21,8 @@ namespace HotToursManager.Desktop.Forms
             // see https://aka.ms/applicationconfiguration.
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            var repo = new InMemoryTourRepository();
+
+            var repo = new MySqlTourRepository();
             var service = new TourService(repo);
             Application.Run(new MainForm(service));
         }

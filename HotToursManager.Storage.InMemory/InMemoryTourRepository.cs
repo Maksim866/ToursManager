@@ -85,10 +85,11 @@ namespace HotToursManager.Storage.InMemory
         /// <summary>
         /// Добавляет тур в память
         /// </summary>
-        public void Add(Tour tour)
+        public async Task AddAsync(Tour tour)
         {
             tour.Id = nextId++;
             tours.Add(tour);
+            await Task.CompletedTask;
         }
         /// <summary>
         /// Обновляет тур по ID
