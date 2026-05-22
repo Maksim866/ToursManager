@@ -22,16 +22,23 @@ namespace HotToursManager.Desktop.Forms
             dataGridView1.CellPainting += DataGridView1_CellPainting;
             dataGridView1.Dock = DockStyle.Fill;
 
-            RefreshGrid();
-            UpdateStats();
+            this.Load += MainForm_Load;
         }
-        private void RefreshGrid()
+
+        private async void MainForm_Load(object? sender, EventArgs e)
+        {
+            await RefreshGridAsync();
+            await UpdateStatsAsync();
+        }
+        private async Task RefreshGridAsync()
         {
             dataGridView1.DataSource = null;
-            dataGridView1.DataSource = service.GetAllTours();
+
+            // Асинхронно получаем список туров
+            var tours = await service.GetAllToursAsync();
+            dataGridView1.DataSource = tours;
 
             // Обновляем максимум для пропорциональной заливки
-            var tours = service.GetAllTours();
             maxTotalCost = tours.Any() ? tours.Max(t => t.TotalCost) : 1;
 
             SetupGrid();
@@ -93,26 +100,26 @@ namespace HotToursManager.Desktop.Forms
             }
         }
 
-        private void UpdateStats()
+        private async Task UpdateStatsAsync()
         {
-            var stats = service.GetStatistics();
+            var stats = await service.GetStatisticsAsync();
             label1.Text = $"Общее количество туров: {stats.TotalTours} | " +
                           $"Общая сумма за все туры: {stats.TotalCost:N0} ₽ | " +
                           $"Количество туров с доплатами: {stats.ToursWithSurcharges} | " +
                           $"Общая сумма доплат.: {stats.TotalSurcharges:N0} ₽";
         }
 
-        private void btnAdd_Click_1(object sender, EventArgs e)
+        private async void btnAdd_Click_1(object sender, EventArgs e)
         {
             var form = new AddEditTourForm(service, null);
             if (form.ShowDialog() == DialogResult.OK)
             {
-                RefreshGrid();
-                UpdateStats();
+                await RefreshGridAsync();
+                await UpdateStatsAsync();
             }
         }
 
-        private void btnEdit_Click_1(object sender, EventArgs e)
+        private async void btnEdit_Click_1(object sender, EventArgs e)
         {
             if (dataGridView1.SelectedRows.Count > 0)
             {
@@ -120,8 +127,8 @@ namespace HotToursManager.Desktop.Forms
                 var form = new AddEditTourForm(service, id);
                 if (form.ShowDialog() == DialogResult.OK)
                 {
-                    RefreshGrid();
-                    UpdateStats();
+                    await RefreshGridAsync();
+                    await UpdateStatsAsync();
                 }
             }
             else
@@ -134,7 +141,7 @@ namespace HotToursManager.Desktop.Forms
             }
         }
 
-        private void btnDelete_Click_1(object sender, EventArgs e)
+        private async Task btnDelete_Click_1(object sender, EventArgs e)
         {
             if (dataGridView1.SelectedRows.Count > 0)
             {
@@ -147,9 +154,9 @@ namespace HotToursManager.Desktop.Forms
 
                 if (result == DialogResult.Yes)
                 {
-                    service.DeleteTour(id);
-                    RefreshGrid();
-                    UpdateStats();
+                    await service.DeleteTourAsync(id);
+                    await RefreshGridAsync();
+                    await UpdateStatsAsync();
                 }
             }
             else

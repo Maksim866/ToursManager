@@ -25,12 +25,12 @@ namespace HotToursManager.Services
         /// <summary>
         /// Возвращает все туры с логированием производительности
         /// </summary>
-        public List<Tour> GetAllTours()
+        public async Task<List<Tour>> GetAllToursAsync()
         {
             var watch = new Stopwatch();
             watch.Start();
 
-            var result = mainService.GetAllTours();
+            var result = await mainService.GetAllToursAsync();
 
             watch.Stop();
             var count = result != null ? result.Count : 0;
@@ -45,12 +45,12 @@ namespace HotToursManager.Services
         /// <summary>
         /// Добавляет тур с логированием производительности
         /// </summary>
-        public void AddTour(Tour tour)
+        public async Task AddTourAsync(Tour tour)
         {
             var watch = new Stopwatch();
             watch.Start();
 
-            mainService.AddTour(tour);
+            await mainService.AddTourAsync(tour);
 
             watch.Stop();
             var destination = tour != null ? tour.Destination : null;
@@ -63,12 +63,12 @@ namespace HotToursManager.Services
         /// <summary>
         /// Обновляет тур с логированием производительности
         /// </summary>
-        public void UpdateTour(Tour tour)
+        public async Task UpdateTourAsync(Tour tour)
         {
             var watch = new Stopwatch();
             watch.Start();
 
-            mainService.UpdateTour(tour);
+            await mainService.UpdateTourAsync(tour);
 
             watch.Stop();
             var destination = tour != null ? tour.Destination : null;
@@ -83,12 +83,12 @@ namespace HotToursManager.Services
         /// <summary>
         /// Удаляет тур по ID с логированием производительности
         /// </summary>
-        public void DeleteTour(int id)
+        public async Task DeleteTourAsync(int id)
         {
             var watch = new Stopwatch();
             watch.Start();
 
-            mainService.DeleteTour(id);
+            await mainService.DeleteTourAsync(id);
 
             watch.Stop();
             logger.LogDebug(
@@ -100,12 +100,12 @@ namespace HotToursManager.Services
         /// <summary>
         /// Возвращает тур по ID с логированием производительности
         /// </summary>
-        public Tour GetTourById(int id)
+        public async Task<Tour> GetTourByIdAsync(int id)
         {
             var watch = new Stopwatch();
             watch.Start();
 
-            var result = mainService.GetTourById(id);
+            var result = await mainService.GetTourByIdAsync(id);
 
             watch.Stop();
             var found = result != null;
@@ -120,12 +120,12 @@ namespace HotToursManager.Services
         /// <summary>
         /// Возвращает статистику по турам с логированием производительности
         /// </summary>
-        public Statistics GetStatistics()
+        public async Task<Statistics> GetStatisticsAsync()
         {
             var watch = new Stopwatch();
             watch.Start();
 
-            var result = mainService.GetStatistics();
+            var result = await mainService.GetStatisticsAsync();
 
             watch.Stop();
             var totalCost = result != null ? result.TotalCost : 0;

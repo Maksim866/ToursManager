@@ -22,7 +22,7 @@ namespace HotToursManager.Services
         /// <summary>
         /// Возвращает все туры
         /// </summary>
-        public List<Tour> GetAllTours() => repo.GetAll();
+        public Task<List<Tour>> GetAllToursAsync() => repo.GetAllAsync();
 
         /// <summary>
         /// Добавляет тур
@@ -32,24 +32,24 @@ namespace HotToursManager.Services
         /// <summary>
         /// Обновляет тур
         /// </summary>
-        public void UpdateTour(Tour tour) => repo.Update(tour);
+        public Task UpdateTourAsync(Tour tour) => repo.UpdateAsync(tour);
 
         /// <summary>
         /// Удаляет тур по ID
         /// </summary>
-        public void DeleteTour(int id) => repo.Delete(id);
+        public Task DeleteTourAsync(int id) => repo.DeleteAsync(id);
 
         /// <summary>
         /// Возвращает тур по ID
         /// </summary>
-        public Tour GetTourById(int id) => repo.GetById(id);
+        public Task<Tour> GetTourByIdAsync(int id) => repo.GetByIdAsync(id);
 
         /// <summary>
         /// Возвращает статистику по турам
         /// </summary>
-        public Statistics GetStatistics()
+        public async Task<Statistics> GetStatisticsAsync()
         {
-            var tours = repo.GetAll();
+            var tours = await repo.GetAllAsync();
             return new Statistics
             {
                 TotalTours = tours.Count,

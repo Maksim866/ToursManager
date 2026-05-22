@@ -12,13 +12,13 @@ namespace HotToursManager.Storage.MsSql
         /// <summary>
         /// Получать все туры
         /// </summary>
-        public List<Tour> GetAll()
+        public async Task<List<Tour>> GetAllAsync()
         {
             using var db = new TourDbContext();
-            var result = db.Tours
+            var result = await db.Tours
                 .AsNoTracking()
                 .OrderBy(t => t.Destination)
-                .ToList();
+                .ToListAsync();
             return result;
         }
 
@@ -35,10 +35,10 @@ namespace HotToursManager.Storage.MsSql
         /// <summary>
         /// Обновить тур
         /// </summary>
-        public void Update(Tour tour)
+        public async Task UpdateAsync(Tour tour)
         {
             using var db = new TourDbContext();
-            var existing = db.Tours.Find(tour.Id);
+            var existing = await db.Tours.FindAsync(tour.Id);
             if (existing == null)
             {
                 return;
@@ -53,32 +53,32 @@ namespace HotToursManager.Storage.MsSql
             existing.Surcharges = tour.Surcharges;
 
             db.Tours.Update(existing);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
         }
 
         /// <summary>
         /// Удалить тур по ID
         /// </summary>
-        public void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
             using var db = new TourDbContext();
-            var tour = db.Tours.Find(id);
+            var tour = await db.Tours.FindAsync(id);
             if (tour == null)
             {
                 return;
             }
 
             db.Tours.Remove(tour);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
         }
 
 
-        public Tour GetById(int id)
+        public async Task<Tour> GetByIdAsync(int id)
         {
             using var db = new TourDbContext();
-            var result = db.Tours
+            var result = await db.Tours
                 .AsNoTracking()
-                .FirstOrDefault(t => t.Id == id);
+                .FirstOrDefaultAsync(t => t.Id == id);
             return result;
         }
     }

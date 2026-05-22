@@ -83,7 +83,7 @@ namespace HotToursManager.Services.Tests
         /// Проверяет, что AddTour передаёт тур в репозиторий для сохранения
         /// </summary>
         [Fact]
-        public void AddTour_DelegatesToRepository()
+        public async Task AddTour_DelegatesToRepository()
         {
             //Arrange
             var tour = new Tour
@@ -98,9 +98,9 @@ namespace HotToursManager.Services.Tests
                 Surcharges = 0
             };
             //Act
-            service.AddTour(tour);
+            await service.AddTourAsync(tour);
             //Assert
-            mockRepo.Verify(r => r.Add(tour), Times.Once);
+            mockRepo.Verify(r => r.AddAsync(tour), Times.Once);
         }
 
         /// <summary>

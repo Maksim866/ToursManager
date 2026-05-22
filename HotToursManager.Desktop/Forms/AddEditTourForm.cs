@@ -262,7 +262,7 @@ namespace HotToursManager.Desktop.Forms
             lblTotalCost.Text = $"{currentTour.TotalCost:N2} руб";
             lblPricePerNight.Text = $"{currentTour.PricePerNight:N2} руб";
         }
-        private void BtnSave_Click(object sender, EventArgs e)
+        private async void BtnSave_Click(object sender, EventArgs e)
         {
             if (TourValidator.ValidateForm(
                 txtDestination.Text,
@@ -286,11 +286,11 @@ namespace HotToursManager.Desktop.Forms
 
                 if (editingId.HasValue)
                 {
-                    tourService.UpdateTour(currentTour);
+                    await tourService.UpdateTourAsync(currentTour);
                 }
                 else
                 {
-                    tourService.AddTour(currentTour);
+                    await tourService.AddTourAsync(currentTour);
                 }
 
                 this.DialogResult = DialogResult.OK;

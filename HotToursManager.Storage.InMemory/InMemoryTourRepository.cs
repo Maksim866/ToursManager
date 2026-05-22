@@ -17,9 +17,9 @@ namespace HotToursManager.Storage.InMemory
         {
             SeedInitialData();
         }
-        private async Task SeedInitialData()
+        private void SeedInitialData()
         {
-            await AddAsync(new Tour
+            AddAsync(new Tour
             {
                 Destination = "Турция",
                 DepartureDate = new DateTime(2024, 6, 15),
@@ -28,9 +28,9 @@ namespace HotToursManager.Storage.InMemory
                 NumberOfPeople = 2,
                 HasWiFi = true,
                 Surcharges = 1500,
-            });
+            }).Wait();
 
-            await AddAsync(new Tour
+            AddAsync(new Tour
             {
                 Destination = "Испания",
                 DepartureDate = new DateTime(2024, 7, 20),
@@ -39,9 +39,9 @@ namespace HotToursManager.Storage.InMemory
                 NumberOfPeople = 3,
                 HasWiFi = false,
                 Surcharges = 2300,
-            });
+            }).Wait();
 
-            await AddAsync(new Tour
+            AddAsync(new Tour
             {
                 Destination = "Италия",
                 DepartureDate = new DateTime(2024, 8, 5),
@@ -50,9 +50,9 @@ namespace HotToursManager.Storage.InMemory
                 NumberOfPeople = 1,
                 HasWiFi = true,
                 Surcharges = 0
-            });
+            }).Wait();
 
-            await AddAsync(new Tour
+            AddAsync(new Tour
             {
                 Destination = "Франция",
                 DepartureDate = new DateTime(2024, 9, 10),
@@ -61,9 +61,9 @@ namespace HotToursManager.Storage.InMemory
                 NumberOfPeople = 4,
                 HasWiFi = true,
                 Surcharges = 800
-            });
+            }).Wait();
 
-            await AddAsync(new Tour
+            AddAsync(new Tour
             {
                 Destination = "Шушары",
                 DepartureDate = new DateTime(2024, 10, 1),
@@ -72,39 +72,44 @@ namespace HotToursManager.Storage.InMemory
                 NumberOfPeople = 2,
                 HasWiFi = true,
                 Surcharges = 3450
-            });
+            }).Wait();
         }
         /// <summary>
         /// Возвращает все туры из памяти
         /// </summary>
-        public List<Tour> GetAll() => new(tours);
+        public Task<List<Tour>> GetAllAsync() => Task.FromResult(new List<Tour>(tours));
         /// <summary>
         /// Возвращает тур по ID
         /// </summary>
-        public Tour GetById(int id) => tours.FirstOrDefault(t => t.Id == id);
+        public Task<Tour> GetByIdAsync(int id) => Task.FromResult(tours.FirstOrDefault(t => t.Id == id));
         /// <summary>
         /// Добавляет тур в память
         /// </summary>
-        public async Task AddAsync(Tour tour)
+        public Task AddAsync(Tour tour)
         {
             tour.Id = nextId++;
             tours.Add(tour);
-            await Task.CompletedTask;
+            return Task.CompletedTask;
         }
         /// <summary>
         /// Обновляет тур по ID
         /// </summary>
-        public void Update(Tour tour)
+        public Task UpdateAsync(Tour tour)
         {
             var index = tours.FindIndex(t => t.Id == tour.Id);
             if (index >= 0)
             {
                 tours[index] = tour;
             }
+            return Task.CompletedTask;
         }
         /// <summary>
         /// Удаляет тур по ID
         /// </summary>
-        public void Delete(int id) => tours.RemoveAll(t => t.Id == id);
+        public Task DeleteAsync(int id)
+        {
+            tours.RemoveAll(t => t.Id == id);
+            return Task.CompletedTask;
+        }
     }
 }
