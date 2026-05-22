@@ -1,8 +1,9 @@
-﻿using HotToursManager.Services;
+using HotToursManager.Services;
+using HotToursManager.Storage.MsSql;
 using Microsoft.Extensions.Logging;
+using Microsoft.VisualBasic.Logging;
 using Serilog;
 using Serilog.Extensions.Logging;
-using HotToursManager.Storage.MsSql;
 
 namespace HotToursManager.Desktop.Forms
 {
@@ -17,6 +18,22 @@ namespace HotToursManager.Desktop.Forms
         [STAThread]
         static void Main()
         {
+            var seqApiKey = "X679FRs1i5apzr7iEfyg";
+
+            var serilogLogger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .WriteTo.Debug()
+                .WriteTo.Seq(
+                        serverUrl: "http://localhost:5341",
+                        apiKey: seqApiKey,
+                        restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Debug
+                )
+                .WriteTo.File("logs/tour-perf-.log", rollingInterval: RollingInterval.Day)
+                .CreateLogger();
+
+            var loggerFactory = new SerilogLoggerFactory(serilogLogger);
+            var logger = loggerFactory.CreateLogger<TourServiceLogWrapper>();
+
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             Application.EnableVisualStyles();
@@ -24,7 +41,11 @@ namespace HotToursManager.Desktop.Forms
 
             var repo = new MySqlTourRepository();
             var service = new TourService(repo);
-            Application.Run(new MainForm(service));
+            var loggingWrapper = new TourServiceLogWrapper(service, logger);
+
+            Application.Run(new MainForm(loggingWrapper));
+
+            Log.CloseAndFlush();
         }
     }
 }
