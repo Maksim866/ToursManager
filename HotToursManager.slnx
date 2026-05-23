@@ -1,7 +1,9 @@
 <Solution>
   <Folder Name="/BL/">
     <Project Path="HotToursManager.Services.Contracts/HotToursManager.Services.Contracts.csproj" Id="f0ed36ff-9e29-44e5-a854-55fdfc5789da" />
-    <Project Path="HotToursManager.Services.Tests/HotToursManager.Services.Tests.csproj" Id="78afd7fa-93f3-405d-b000-56e995926df3" />
+    <Project Path="HotToursManager.Services.Tests/HotToursManager.Services.Tests.csproj" Id="78afd7fa-93f3-405d-b000-56e995926df3">
+      <Build Solution="Debug|*" Project="false" />
+    </Project>
     <Project Path="HotToursManager.Services/HotToursManager.Services.csproj" Id="31d3cfb6-568f-4437-b825-568937e6d5d7" />
   </Folder>
   <Folder Name="/DAL/">
