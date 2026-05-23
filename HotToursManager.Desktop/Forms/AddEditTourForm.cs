@@ -40,10 +40,15 @@ namespace HotToursManager.Desktop.Forms
 
             InitializeComponent();
 
-            if (id.HasValue)
+            this.Load += async (s, e) => await LoadTourDataAsync();
+        }
+
+        private async Task LoadTourDataAsync()
+        {
+            if (editingId.HasValue)
             {
                 this.Text = "Редактирование тура";
-                var existingTour = tourService.GetTourByIdAsync(id.Value).GetAwaiter().GetResult();
+                var existingTour = await tourService.GetTourByIdAsync(editingId.Value);
                 if (existingTour != null)
                 {
                     currentTour = existingTour;
@@ -57,6 +62,7 @@ namespace HotToursManager.Desktop.Forms
                 }
             }
         }
+
         private void InitializeComponent()
         {
             this.Size = new System.Drawing.Size(450, 550);
