@@ -33,8 +33,6 @@ namespace HotToursManager.Desktop.Forms
 
         private async Task RefreshGridAsync()
         {
-            var tours = service.GetAllTours();
-
             dataGridView1.DataSource = null;
 
             // Асинхронно получаем список туров
