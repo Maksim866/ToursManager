@@ -30,6 +30,7 @@ namespace HotToursManager.Desktop.Forms
             await RefreshGridAsync();
             await UpdateStatsAsync();
         }
+
         private async Task RefreshGridAsync()
         {
             var tours = service.GetAllTours();
@@ -45,7 +46,6 @@ namespace HotToursManager.Desktop.Forms
 
             SetupGrid();
         }
-
         private void SetupGrid()
         {
             // Настройка заголовков и форматов

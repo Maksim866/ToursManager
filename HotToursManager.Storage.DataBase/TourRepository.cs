@@ -2,20 +2,28 @@ using Microsoft.EntityFrameworkCore;
 using HotToursManager.Models;
 using HotToursManager.Storage.Contracts;
 
-namespace HotToursManager.Storage.MsSql
+namespace HotToursManager.Storage.DataBase
 {
     /// <summary>
     /// Репозиторий для работы с турами через MsSQL
     /// </summary>
-    public class MySqlTourRepository : ITourRepository
+    public class TourRepository : ITourRepository
     {
+        private readonly TourDbContext dbContext;
+
+        /// <summary>
+        /// Конструктор с внедрением DbContext
+        /// </summary>
+        public TourRepository(TourDbContext сontext)
+        {
+            dbContext = сontext;
+        }
         /// <summary>
         /// Получать все туры
         /// </summary>
         public async Task<List<Tour>> GetAllAsync()
         {
-            using var db = new TourDbContext();
-            var result = await db.Tours
+            var result = await dbContext.Tours
                 .AsNoTracking()
                 .OrderBy(t => t.Destination)
                 .ToListAsync();
@@ -27,9 +35,8 @@ namespace HotToursManager.Storage.MsSql
         /// </summary>
         public async Task AddAsync(Tour tour)
         {
-            using var db = new TourDbContext();
-            await db.Tours.AddAsync(tour);
-            await db.SaveChangesAsync();
+            await dbContext.Tours.AddAsync(tour);
+            await dbContext.SaveChangesAsync();
         }
 
         /// <summary>
@@ -37,11 +44,10 @@ namespace HotToursManager.Storage.MsSql
         /// </summary>
         public async Task UpdateAsync(Tour tour)
         {
-            using var db = new TourDbContext();
-            var existing = await db.Tours.FindAsync(tour.Id);
+            var existing = await dbContext.Tours.FindAsync(tour.Id);
             if (existing == null)
             {
-                return;
+                throw new InvalidOperationException($"Тур с ID {tour.Id} не найден. Невозможно обновить.");
             }
 
             existing.Destination = tour.Destination;
@@ -52,8 +58,7 @@ namespace HotToursManager.Storage.MsSql
             existing.HasWiFi = tour.HasWiFi;
             existing.Surcharges = tour.Surcharges;
 
-            db.Tours.Update(existing);
-            await db.SaveChangesAsync();
+            await dbContext.SaveChangesAsync();
         }
 
         /// <summary>
@@ -61,22 +66,20 @@ namespace HotToursManager.Storage.MsSql
         /// </summary>
         public async Task DeleteAsync(int id)
         {
-            using var db = new TourDbContext();
-            var tour = await db.Tours.FindAsync(id);
+            var tour = await dbContext.Tours.FindAsync(id);
             if (tour == null)
             {
                 return;
             }
 
-            db.Tours.Remove(tour);
-            await db.SaveChangesAsync();
+            dbContext.Tours.Remove(tour);
+            await dbContext.SaveChangesAsync();
         }
 
 
         public async Task<Tour> GetByIdAsync(int id)
         {
-            using var db = new TourDbContext();
-            var result = await db.Tours
+            var result = await dbContext.Tours
                 .AsNoTracking()
                 .FirstOrDefaultAsync(t => t.Id == id);
             return result;

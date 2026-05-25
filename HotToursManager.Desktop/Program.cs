@@ -1,5 +1,5 @@
 using HotToursManager.Services;
-using HotToursManager.Storage.MsSql;
+using HotToursManager.Storage.DataBase;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Extensions.Logging;
@@ -38,7 +38,8 @@ namespace HotToursManager.Desktop.Forms
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            var repo = new MySqlTourRepository();
+            var dbContext = new TourDbContext();
+            var repo = new TourRepository(dbContext);
             var service = new TourService(repo);
             var loggingWrapper = new TourServiceLogWrapper(service, logger);
 

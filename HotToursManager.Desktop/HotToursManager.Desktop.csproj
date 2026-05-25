@@ -20,7 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HotToursManager.Services\HotToursManager.Services.csproj" />
-    <ProjectReference Include="..\HotToursManager.Storage.MsSql\HotToursManager.Storage.MsSql.csproj" />
+    <ProjectReference Include="..\HotToursManager.Storage.DataBase\HotToursManager.Storage.DataBase.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,7 +1,7 @@
 using HotToursManager.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace HotToursManager.Storage.MsSql
+namespace HotToursManager.Storage.DataBase
 {
     /// <summary>
     /// Контекст базы данных для управления турами
