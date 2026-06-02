@@ -40,10 +40,15 @@ namespace HotToursManager.Desktop.Forms
 
             InitializeComponent();
 
-            if (id.HasValue)
+            this.Load += async (s, e) => await LoadTourDataAsync();
+        }
+
+        private async Task LoadTourDataAsync()
+        {
+            if (editingId.HasValue)
             {
                 this.Text = "Редактирование тура";
-                var existingTour = tourService.GetTourById(id.Value);
+                var existingTour = await tourService.GetTourByIdAsync(editingId.Value);
                 if (existingTour != null)
                 {
                     currentTour = existingTour;
@@ -57,6 +62,7 @@ namespace HotToursManager.Desktop.Forms
                 }
             }
         }
+
         private void InitializeComponent()
         {
             this.Size = new System.Drawing.Size(450, 550);
@@ -262,7 +268,7 @@ namespace HotToursManager.Desktop.Forms
             lblTotalCost.Text = $"{currentTour.TotalCost:N2} руб";
             lblPricePerNight.Text = $"{currentTour.PricePerNight:N2} руб";
         }
-        private void BtnSave_Click(object sender, EventArgs e)
+        private async void BtnSave_Click(object sender, EventArgs e)
         {
             if (TourValidator.ValidateForm(
                 txtDestination.Text,
@@ -270,14 +276,14 @@ namespace HotToursManager.Desktop.Forms
                 decimal.Parse(txtCostPerPerson.Text),
                 int.Parse(txtNumberOfPeople.Text),
                 decimal.Parse(txtSurcharges.Text),
-                dtpDeparture.Value,
+                dtpDeparture.Value.ToUniversalTime(),
                 editingId,
                 out var errorMessage))
             {
                 TourFormMapper.SaveFormToTour(
                     currentTour,
                     txtDestination.Text,
-                    dtpDeparture.Value,
+                    dtpDeparture.Value.ToUniversalTime(),
                     int.Parse(txtNights.Text),
                     decimal.Parse(txtCostPerPerson.Text),
                     int.Parse(txtNumberOfPeople.Text),
@@ -286,11 +292,11 @@ namespace HotToursManager.Desktop.Forms
 
                 if (editingId.HasValue)
                 {
-                    tourService.UpdateTour(currentTour);
+                    await tourService.UpdateTourAsync(currentTour);
                 }
                 else
                 {
-                    tourService.AddTour(currentTour);
+                    await tourService.AddTourAsync(currentTour);
                 }
 
                 this.DialogResult = DialogResult.OK;

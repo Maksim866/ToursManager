@@ -7,31 +7,31 @@ namespace HotToursManager.Services.Contracts
         /// <summary>
         /// Возвращает все туры
         /// </summary>
-        List<Tour> GetAllTours();
+        Task<List<Tour>> GetAllToursAsync();
 
         /// <summary>
         /// Добавляет новый тур
         /// </summary>
-        void AddTour(Tour tour);
+        Task AddTourAsync(Tour tour);
 
         /// <summary>
         /// Обновляет тур
         /// </summary>
-        void UpdateTour(Tour tour);
+        Task UpdateTourAsync(Tour tour);
 
         /// <summary>
         /// Удаляет тур по ID
         /// </summary>
-        void DeleteTour(int id);
+        Task DeleteTourAsync(int id);
 
         /// <summary>
         /// Возвращает тур по ID
         /// </summary>
-        Tour GetTourById(int id);
+        Task<Tour> GetTourByIdAsync(int id);
 
         /// <summary>
         /// Возвращает статистику по турам
         /// </summary>
-        Statistics GetStatistics();
+        Task<Statistics> GetStatisticsAsync();
     }
 }

@@ -92,13 +92,10 @@ namespace HotToursManager.Desktop.Forms
             // 
             // label1
             // 
-            label1.AutoSize = true;
             label1.Dock = DockStyle.Bottom;
-            label1.Height = 48;
-            label1.AutoSize = false;
             label1.Location = new Point(0, 435);
             label1.Name = "label1";
-            label1.Size = new Size(38, 15);
+            label1.Size = new Size(800, 15);
             label1.TabIndex = 0;
             label1.Text = "label1";
             // 
@@ -115,7 +112,6 @@ namespace HotToursManager.Desktop.Forms
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             panel1.ResumeLayout(false);
             ResumeLayout(false);
-            PerformLayout();
         }
 
         private Panel panel1;

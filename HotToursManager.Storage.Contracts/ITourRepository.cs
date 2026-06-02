@@ -10,22 +10,22 @@ namespace HotToursManager.Storage.Contracts
         /// <summary>
         /// Получает список всех туров
         /// </summary>
-        List<Tour> GetAll();
+        Task<List<Tour>> GetAllAsync();
         /// <summary>
         /// Получает тур по ID
         /// </summary>
-        Tour GetById(int id);
+        Task<Tour> GetByIdAsync(int id);
         /// <summary>
         /// Обновляет информацию о туре
         /// </summary>
-        void Update(Tour tour);
+        Task UpdateAsync(Tour tour);
         /// <summary>
         /// Удаляет тур по ID
         /// </summary>
-        void Delete(int id);
+        Task DeleteAsync(int id);
         /// <summary>
         /// Добавляет новый тур
         /// </summary>
-        void Add(Tour tour);
+        Task AddAsync(Tour tour);
     }
 }
