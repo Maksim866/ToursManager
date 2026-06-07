@@ -17,4 +17,5 @@
   </Folder>
   <Project Path="HotToursManager.Desktop/HotToursManager.Desktop.csproj" />
   <Project Path="HotToursManager.Models/HotToursManager.Models.csproj" Id="01a78a2f-e43d-4c2b-b86d-34ac04da8fd5" />
+  <Project Path="HotToursManager.Web/HotToursManager.Web.csproj" Id="c6e905f3-ac5a-4869-97dd-57971750b719" />
 </Solution>

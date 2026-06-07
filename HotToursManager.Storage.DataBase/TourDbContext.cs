@@ -18,6 +18,11 @@ namespace HotToursManager.Storage.DataBase
         /// </summary>
         public TourDbContext() => Database.EnsureCreated();
 
+        public TourDbContext(DbContextOptions<TourDbContext> options)
+           : base(options)
+        {
+        }
+
         /// <summary>
         /// Настройка подключения к БД
         /// </summary>
