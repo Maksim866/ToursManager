@@ -9,6 +9,6 @@ namespace HotToursManager.Storage.Contracts
         /// <summary>
         /// Предоставляет функциональные возможности для выполнения запросов
         /// </summary>
-        IQueryable<TEntity> Reader<TEntity>() where TEntity : class;
+        IQueryable<TEntity> Read<TEntity>() where TEntity : class;
     }
 }

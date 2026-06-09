@@ -25,7 +25,7 @@ namespace HotToursManager.Storage.DataBase
         /// </summary>
         public async Task<List<Tour>> GetAllAsync()
         {
-            var result = await reader.Reader<Tour>()
+            var result = await reader.Read<Tour>()
                 .AsNoTracking()
                 .OrderBy(t => t.Destination)
                 .ToListAsync();
@@ -46,7 +46,7 @@ namespace HotToursManager.Storage.DataBase
         /// </summary>
         public async Task UpdateAsync(Tour tour)
         {
-            var existing = await reader.Reader<Tour>()
+            var existing = await reader.Read<Tour>()
                 .AsNoTracking()
                 .FirstOrDefaultAsync(t => t.Id == tour.Id);
             if (existing == null)
@@ -71,7 +71,7 @@ namespace HotToursManager.Storage.DataBase
         /// </summary>
         public async Task DeleteAsync(int id)
         {
-            var tour = await reader.Reader<Tour>()
+            var tour = await reader.Read<Tour>()
                 .AsNoTracking()
                 .FirstOrDefaultAsync(t => t.Id == id);
             if (tour == null)
@@ -86,7 +86,7 @@ namespace HotToursManager.Storage.DataBase
 
         public async Task<Tour> GetByIdAsync(int id)
         {
-            var result = await reader.Reader<Tour>()
+            var result = await reader.Read<Tour>()
                 .AsNoTracking()
                 .FirstOrDefaultAsync(t => t.Id == id);
             return result;

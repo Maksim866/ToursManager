@@ -19,6 +19,9 @@ namespace HotToursManager.Storage.DataBase
         /// </summary>
         public TourDbContext() => Database.EnsureCreated();
 
+        /// <summary>
+        /// Конструктор для внедрения зависимостей
+        /// </summary>
         public TourDbContext(DbContextOptions<TourDbContext> options)
            : base(options)
         {
@@ -35,7 +38,7 @@ namespace HotToursManager.Storage.DataBase
         /// <summary>
         /// Получение данных из БД без отслеживания изменений
         /// </summary>
-        IQueryable<TEntity> IReader.Reader<TEntity>()
+        IQueryable<TEntity> IReader.Read<TEntity>()
         {
             return base.Set<TEntity>()
                        .AsNoTracking()
