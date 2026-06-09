@@ -20,6 +20,8 @@ namespace HotToursManager.Web
             builder.Services.AddDbContext<TourDbContext>(options =>
                 options.UseNpgsql(connection));
             builder.Services.AddScoped<ITourRepository, TourRepository>();
+            builder.Services.AddScoped<IReader, TourDbContext>();
+            builder.Services.AddScoped<IWriter, TourDbContext>();
             builder.Services.AddScoped<ITourService, TourService>();
 
             var app = builder.Build();

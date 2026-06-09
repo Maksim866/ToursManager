@@ -9,21 +9,23 @@ namespace HotToursManager.Storage.DataBase
     /// </summary>
     public class TourRepository : ITourRepository
     {
-        private readonly TourDbContext dbContext;
+        private readonly IReader reader;
+        private readonly IWriter writer;
 
         /// <summary>
         /// Конструктор с внедрением DbContext
         /// </summary>
-        public TourRepository(TourDbContext сontext)
+        public TourRepository(IReader reader, IWriter writer)
         {
-            dbContext = сontext;
+            this.reader = reader;
+            this.writer = writer;
         }
         /// <summary>
         /// Получать все туры
         /// </summary>
         public async Task<List<Tour>> GetAllAsync()
         {
-            var result = await dbContext.Tours
+            var result = await reader.Reader<Tour>()
                 .AsNoTracking()
                 .OrderBy(t => t.Destination)
                 .ToListAsync();
@@ -35,8 +37,8 @@ namespace HotToursManager.Storage.DataBase
         /// </summary>
         public async Task AddAsync(Tour tour)
         {
-            await dbContext.Tours.AddAsync(tour);
-            await dbContext.SaveChangesAsync();
+            writer.Add(tour);
+            await writer.SaveChangesAsync();
         }
 
         /// <summary>
@@ -44,7 +46,9 @@ namespace HotToursManager.Storage.DataBase
         /// </summary>
         public async Task UpdateAsync(Tour tour)
         {
-            var existing = await dbContext.Tours.FindAsync(tour.Id);
+            var existing = await reader.Reader<Tour>()
+                .AsNoTracking()
+                .FirstOrDefaultAsync(t => t.Id == tour.Id);
             if (existing == null)
             {
                 throw new InvalidOperationException($"Тур с ID {tour.Id} не найден. Невозможно обновить.");
@@ -58,7 +62,8 @@ namespace HotToursManager.Storage.DataBase
             existing.HasWiFi = tour.HasWiFi;
             existing.Surcharges = tour.Surcharges;
 
-            await dbContext.SaveChangesAsync();
+            writer.Update(existing);
+            await writer.SaveChangesAsync();
         }
 
         /// <summary>
@@ -66,20 +71,22 @@ namespace HotToursManager.Storage.DataBase
         /// </summary>
         public async Task DeleteAsync(int id)
         {
-            var tour = await dbContext.Tours.FindAsync(id);
+            var tour = await reader.Reader<Tour>()
+                .AsNoTracking()
+                .FirstOrDefaultAsync(t => t.Id == id);
             if (tour == null)
             {
                 return;
             }
 
-            dbContext.Tours.Remove(tour);
-            await dbContext.SaveChangesAsync();
+            writer.Delete(tour);
+            await writer.SaveChangesAsync();
         }
 
 
         public async Task<Tour> GetByIdAsync(int id)
         {
-            var result = await dbContext.Tours
+            var result = await reader.Reader<Tour>()
                 .AsNoTracking()
                 .FirstOrDefaultAsync(t => t.Id == id);
             return result;
