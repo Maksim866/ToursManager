@@ -2,7 +2,50 @@
 
 @{
     ViewData["Title"] = "Список туров";
+
+    var toursList = Model?.ToList() ?? new List<HotToursManager.Models.Tour>();
+    var totalTours = toursList.Count;
+    var totalCost = toursList.Sum(t => t.TotalCost);
+    var toursWithSurcharges = toursList.Count(t => t.Surcharges > 0);
+    var totalSurcharges = toursList.Sum(t => t.Surcharges);
 }
+
+<!-- ==================== БЛОК СТАТИСТИКИ ==================== -->
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card text-white bg-primary mb-3">
+            <div class="card-body text-center">
+                <h5 class="card-title">📋 Всего туров</h5>
+                <h2>@totalTours</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-success mb-3">
+            <div class="card-body text-center">
+                <h5 class="card-title">💰 Общая стоимость</h5>
+                <h2>@totalCost.ToString("N2") ₽</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-info mb-3">
+            <div class="card-body text-center">
+                <h5 class="card-title">💳 Общая сумма доплат</h5>
+                <h2>@totalSurcharges.ToString("N2") ₽</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-warning mb-3">
+            <div class="card-body text-center">
+                <h5 class="card-title">📌 Туров с доплатами</h5>
+                <h2>@toursWithSurcharges</h2>
+                <small>из @totalTours туров</small>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h1>📋 Список туров</h1>
@@ -98,26 +141,36 @@ else
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label">Направление</label>
-                        <input type="text" class="form-control" name="Destination" required />
+                        <label class="form-label">Направление <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" name="Destination"
+                               required minlength="2" maxlength="100"
+                               title="Введите направление от 2 до 100 символов" />
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Дата вылета</label>
-                        <input type="date" class="form-control" name="DepartureDate" required />
+                        <label class="form-label">Дата вылета <span class="text-danger">*</span></label>
+                        <input type="date" class="form-control" name="DepartureDate"
+                               min="@DateTime.Today.ToString("yyyy-MM-dd")"
+                               required
+                               title="Выберите дату вылета" />
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label class="form-label">Количество ночей</label>
-                            <input type="number" class="form-control" name="Nights" min="1" required />
+                            <label class="form-label">Количество ночей <span class="text-danger">*</span></label>
+                            <input type="number" class="form-control" name="Nights" min="1" max="99" required
+                                   title="Введите количество ночей от 1 до 99" />
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label class="form-label">Цена за человека (₽)</label>
-                            <input type="number" class="form-control" name="CostPerPerson" step="0.01" min="0" required />
+                            <label class="form-label">Цена за человека (₽) <span class="text-danger">*</span></label>
+                            <input type="number" class="form-control" name="CostPerPerson"
+                                   step="0.01" min="1000" max="500000" required
+                                   title="Введите цену от 1000 до 500 000" />
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Количество отдыхающих</label>
-                        <input type="number" class="form-control" name="NumberOfPeople" min="1" required />
+                        <label class="form-label">Количество отдыхающих <span class="text-danger">*</span></label>
+                        <input type="number" class="form-control" name="NumberOfPeople"
+                               min="1" max="5" required
+                               title="Введите количество людей от 1 до 5" />
                     </div>
                     <div class="mb-3 form-check">
                         <input class="form-check-input" type="checkbox" id="CreateHasWiFi" name="HasWiFi" value="true" />
@@ -125,7 +178,9 @@ else
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Доплаты (₽)</label>
-                        <input type="number" class="form-control" name="Surcharges" step="0.01" min="0" value="0" />
+                        <input type="number" class="form-control" name="Surcharges"
+                               step="0.01" min="0" max="100000" value="0"
+                               title="Введите доплаты от 0 до 100 000" />
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -150,26 +205,37 @@ else
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label">Направление</label>
-                        <input type="text" class="form-control" id="editDestination" name="Destination" required />
+                        <label class="form-label">Направление <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="editDestination" name="Destination"
+                               required minlength="2" maxlength="100"
+                               title="Введите направление от 2 до 100 символов" />
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Дата вылета</label>
-                        <input type="date" class="form-control" id="editDepartureDate" name="DepartureDate" required />
+                        <label class="form-label">Дата вылета <span class="text-danger">*</span></label>
+                        <input type="date" class="form-control" id="editDepartureDate" name="DepartureDate"
+                               min="@DateTime.Today.ToString("yyyy-MM-dd")"
+                               required
+                               title="Выберите дату вылета" />
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label class="form-label">Количество ночей</label>
-                            <input type="number" class="form-control" id="editNights" name="Nights" min="1" required />
+                            <label class="form-label">Количество ночей <span class="text-danger">*</span></label>
+                            <input type="number" class="form-control" id="editNights" name="Nights"
+                                   min="1" max="99" required
+                                   title="Введите количество ночей от 1 до 99" />
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label class="form-label">Цена за человека (₽)</label>
-                            <input type="number" class="form-control" id="editCostPerPerson" name="CostPerPerson" step="0.01" min="0" required />
+                            <label class="form-label">Цена за человека (₽) <span class="text-danger">*</span></label>
+                            <input type="number" class="form-control" id="editCostPerPerson" name="CostPerPerson"
+                                   step="0.01" min="1000" max="500000" required
+                                   title="Введите цену от 1000 до 500 000" />
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Количество отдыхающих</label>
-                        <input type="number" class="form-control" id="editNumberOfPeople" name="NumberOfPeople" min="1" required />
+                        <label class="form-label">Количество отдыхающих <span class="text-danger">*</span></label>
+                        <input type="number" class="form-control" id="editNumberOfPeople" name="NumberOfPeople"
+                               min="1" max="5" required
+                               title="Введите количество людей от 1 до 5" />
                     </div>
                     <div class="mb-3 form-check">
                         <input class="form-check-input" type="checkbox" id="editHasWiFi" name="HasWiFi" value="true" />
@@ -177,8 +243,9 @@ else
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Доплаты (₽)</label>
-                        <input type="number" class="form-control" id="editSurcharges" name="Surcharges" step="0.01" min="0" />
-                    </div>
+                        <input type="number" class="form-control" id="editSurcharges" name="Surcharges"
+                               step="0.01" min="0" max="100000"
+                               title="Введите доплаты от 0 до 100 000" />
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>

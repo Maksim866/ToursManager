@@ -39,6 +39,11 @@ namespace HotToursManager.Web.Controllers
         public async Task<IActionResult> Create(
             [Bind("Destination,DepartureDate,Nights,CostPerPerson,NumberOfPeople,HasWiFi,Surcharges")] Tour tour)
         {
+            if (tour.DepartureDate.Date < DateTime.Today)
+            {
+                ModelState.AddModelError("DepartureDate", "Дата вылета не может быть в прошлом");
+            }
+
             if (ModelState.IsValid)
             {
                 await tourService.AddTourAsync(tour);
@@ -96,6 +101,11 @@ namespace HotToursManager.Web.Controllers
             if (id != tour.Id)
             {
                 return NotFound();
+            }
+
+            if (tour.DepartureDate.Date < DateTime.Today)
+            {
+                ModelState.AddModelError("DepartureDate", "Дата вылета не может быть в прошлом");
             }
 
             if (ModelState.IsValid)
