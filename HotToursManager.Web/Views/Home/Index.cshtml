@@ -120,8 +120,8 @@ else
                         <input type="number" class="form-control" name="NumberOfPeople" min="1" required />
                     </div>
                     <div class="mb-3 form-check">
-                        <input type="checkbox" class="form-check-input" name="HasWiFi" />
-                        <label class="form-check-label">Наличие Wi-Fi</label>
+                        <input class="form-check-input" type="checkbox" id="CreateHasWiFi" name="HasWiFi" value="true" />
+                        <label class="form-check-label" for="CreateHasWiFi">Наличие Wi-Fi</label>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Доплаты (₽)</label>
@@ -172,8 +172,8 @@ else
                         <input type="number" class="form-control" id="editNumberOfPeople" name="NumberOfPeople" min="1" required />
                     </div>
                     <div class="mb-3 form-check">
-                        <input type="checkbox" class="form-check-input" id="editHasWiFi" name="HasWiFi" />
-                        <label class="form-check-label">Наличие Wi-Fi</label>
+                        <input class="form-check-input" type="checkbox" id="editHasWiFi" name="HasWiFi" value="true" />
+                        <label class="form-check-label" for="editHasWiFi">Наличие Wi-Fi</label>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Доплаты (₽)</label>
@@ -241,14 +241,14 @@ else
             document.getElementById('editSurcharges').value = surcharges;
         });
 
-        function setEditAction(id)
-        {
-            document.getElementById('editId').value = id;
-        }
+        var deleteModal = document.getElementById('deleteModal');
+        deleteModal.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget;
+            var tourId = button.getAttribute('data-tour-id');
+            var tourDestination = button.getAttribute('data-tour-destination');
 
-        function setDeleteAction(id)
-        {
-            document.getElementById('deleteTourId').value = id;
-        }
+            document.getElementById('tourDestination').textContent = tourDestination;
+            document.getElementById('deleteTourId').value = tourId;
+        });
     </script>
 }

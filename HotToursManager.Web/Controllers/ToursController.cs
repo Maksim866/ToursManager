@@ -76,10 +76,10 @@ namespace HotToursManager.Web.Controllers
             TempData["EditTourDestination"] = tour.Destination;
             TempData["EditTourDepartureDate"] = tour.DepartureDate.ToString("yyyy-MM-dd");
             TempData["EditTourNights"] = tour.Nights;
-            TempData["EditTourCostPerPerson"] = tour.CostPerPerson;
+            TempData["EditTourCostPerPerson"] = tour.CostPerPerson.ToString();
             TempData["EditTourNumberOfPeople"] = tour.NumberOfPeople;
             TempData["EditTourHasWiFi"] = tour.HasWiFi;
-            TempData["EditTourSurcharges"] = tour.Surcharges;
+            TempData["EditTourSurcharges"] = tour.Surcharges.ToString();
             TempData["OpenEditModal"] = true;
 
             return RedirectToAction(nameof(Index));
@@ -110,10 +110,10 @@ namespace HotToursManager.Web.Controllers
             TempData["EditTourDestination"] = tour.Destination;
             TempData["EditTourDepartureDate"] = tour.DepartureDate.ToString("yyyy-MM-dd");
             TempData["EditTourNights"] = tour.Nights;
-            TempData["EditTourCostPerPerson"] = tour.CostPerPerson;
+            TempData["EditTourCostPerPerson"] = tour.CostPerPerson.ToString();
             TempData["EditTourNumberOfPeople"] = tour.NumberOfPeople;
             TempData["EditTourHasWiFi"] = tour.HasWiFi;
-            TempData["EditTourSurcharges"] = tour.Surcharges;
+            TempData["EditTourSurcharges"] = tour.Surcharges.ToString();
             TempData["OpenEditModal"] = true;
 
             return RedirectToAction(nameof(Index));
