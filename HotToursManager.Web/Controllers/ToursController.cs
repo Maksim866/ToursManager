@@ -27,7 +27,7 @@ namespace HotToursManager.Web.Controllers
         public async Task<IActionResult> Index()
         {
             var tours = await tourService.GetAllToursAsync();
-            return View(tours);
+            return View("~/Views/Home/Index.cshtml", tours);
         }
 
         /// <summary>

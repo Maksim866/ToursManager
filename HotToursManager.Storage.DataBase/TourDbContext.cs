@@ -36,6 +36,19 @@ namespace HotToursManager.Storage.DataBase
         }
 
         /// <summary>
+        /// Настройка моделей — конвертация DateTime в UTC
+        /// </summary>
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Tour>()
+                .Property(t => t.DepartureDate)
+                .HasConversion(
+                    v => DateTime.SpecifyKind(v, DateTimeKind.Utc),
+                    v => DateTime.SpecifyKind(v, DateTimeKind.Utc)
+                );
+        }
+
+        /// <summary>
         /// Получение данных из БД без отслеживания изменений
         /// </summary>
         IQueryable<TEntity> IReader.Read<TEntity>()

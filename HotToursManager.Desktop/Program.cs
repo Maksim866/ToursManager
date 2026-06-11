@@ -39,7 +39,7 @@ namespace HotToursManager.Desktop.Forms
             Application.SetCompatibleTextRenderingDefault(false);
 
             var dbContext = new TourDbContext();
-            var repo = new TourRepository(dbContext);
+            var repo = new TourRepository(reader: dbContext, writer: dbContext);
             var service = new TourService(repo);
             var loggingWrapper = new TourServiceLogWrapper(service, logger);
 

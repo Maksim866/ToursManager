@@ -1,8 +1,254 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model IEnumerable<HotToursManager.Models.Tour>
+
+@{
+    ViewData["Title"] = "Список туров";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>📋 Список туров</h1>
+    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createModal">
+        ➕ Добавить новый тур
+    </button>
 </div>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+@if (Model == null || !Model.Any())
+{
+    <div class="alert alert-info">
+        <h4>Список туров пуст</h4>
+        <p>Добавьте первый тур, нажав кнопку выше.</p>
+    </div>
+}
+else
+{
+    <table class="table table-striped table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Id</th>
+                <th>Направление</th>
+                <th>Дата вылета</th>
+                <th>Ночей</th>
+                <th>Цена за чел.</th>
+                <th>Кол-во людей</th>
+                <th>Wi-Fi</th>
+                <th>Доплаты</th>
+                <th>Общая стоимость</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td><strong>@item.Destination</strong></td>
+                    <td>@item.DepartureDate.ToString("dd.MM.yyyy")</td>
+                    <td>@item.Nights</td>
+                    <td>@item.CostPerPerson.ToString("N2") ₽</td>
+                    <td>@item.NumberOfPeople</td>
+                    <td>@(item.HasWiFi ? "✅" : "❌")</td>
+                    <td>@item.Surcharges.ToString("N2") ₽</td>
+                    <td><strong>@item.TotalCost.ToString("N2") ₽</strong></td>
+                    <td>
+                        <!-- Кнопка редактирования с data-атрибутами -->
+                        <button type="button" class="btn btn-sm btn-warning"
+                                data-bs-toggle="modal"
+                                data-bs-target="#editModal"
+                                data-tour-id="@item.Id"
+                                data-tour-destination="@item.Destination"
+                                data-tour-departure="@item.DepartureDate.ToString("yyyy-MM-dd")"
+                                data-tour-nights="@item.Nights"
+                                data-tour-cost="@item.CostPerPerson"
+                                data-tour-people="@item.NumberOfPeople"
+                                data-tour-wifi="@item.HasWiFi.ToString().ToLower()"
+                                data-tour-surcharges="@item.Surcharges">
+                            ✏️
+                        </button>
+                        <!-- Кнопка удаления с data-атрибутами -->
+                        <button type="button" class="btn btn-sm btn-danger"
+                                data-bs-toggle="modal"
+                                data-bs-target="#deleteModal"
+                                data-tour-id="@item.Id"
+                                data-tour-destination="@item.Destination">
+                            🗑️
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<!-- ==================== МОДАЛКА СОЗДАНИЯ ==================== -->
+<div class="modal fade" id="createModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form asp-action="Create" method="post">
+                @Html.AntiForgeryToken()
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title">➕ Создать новый тур</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Направление</label>
+                        <input type="text" class="form-control" name="Destination" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Дата вылета</label>
+                        <input type="date" class="form-control" name="DepartureDate" required />
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Количество ночей</label>
+                            <input type="number" class="form-control" name="Nights" min="1" required />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Цена за человека (₽)</label>
+                            <input type="number" class="form-control" name="CostPerPerson" step="0.01" min="0" required />
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Количество отдыхающих</label>
+                        <input type="number" class="form-control" name="NumberOfPeople" min="1" required />
+                    </div>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" name="HasWiFi" />
+                        <label class="form-check-label">Наличие Wi-Fi</label>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Доплаты (₽)</label>
+                        <input type="number" class="form-control" name="Surcharges" step="0.01" min="0" value="0" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                    <button type="submit" class="btn btn-success">💾 Сохранить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== МОДАЛКА РЕДАКТИРОВАНИЯ ==================== -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form id="editForm" asp-action="Edit" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" id="editId" name="Id" />
+                <div class="modal-header bg-warning">
+                    <h5 class="modal-title">✏️ Редактировать тур</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Направление</label>
+                        <input type="text" class="form-control" id="editDestination" name="Destination" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Дата вылета</label>
+                        <input type="date" class="form-control" id="editDepartureDate" name="DepartureDate" required />
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Количество ночей</label>
+                            <input type="number" class="form-control" id="editNights" name="Nights" min="1" required />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Цена за человека (₽)</label>
+                            <input type="number" class="form-control" id="editCostPerPerson" name="CostPerPerson" step="0.01" min="0" required />
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Количество отдыхающих</label>
+                        <input type="number" class="form-control" id="editNumberOfPeople" name="NumberOfPeople" min="1" required />
+                    </div>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="editHasWiFi" name="HasWiFi" />
+                        <label class="form-check-label">Наличие Wi-Fi</label>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Доплаты (₽)</label>
+                        <input type="number" class="form-control" id="editSurcharges" name="Surcharges" step="0.01" min="0" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                    <button type="submit" class="btn btn-warning">💾 Сохранить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== МОДАЛКА УДАЛЕНИЯ ==================== -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="deleteForm" asp-action="Delete" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" id="deleteTourId" name="id" />
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title">🗑️ Подтверждение удаления</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Вы действительно хотите удалить тур <strong id="tourDestination"></strong>?</p>
+                    <p class="text-danger">Это действие нельзя отменить.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                    <button type="submit" class="btn btn-danger">🗑️ Да, удалить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        var editModal = document.getElementById('editModal');
+        editModal.addEventListener('show.bs.modal', function (event) {
+            // Кнопка, которая открыла модалку
+            var button = event.relatedTarget;
+
+            // Извлекаем данные из data-атрибутов
+            var id = button.getAttribute('data-tour-id');
+            var destination = button.getAttribute('data-tour-destination');
+            var departure = button.getAttribute('data-tour-departure');
+            var nights = button.getAttribute('data-tour-nights');
+            var cost = button.getAttribute('data-tour-cost');
+            var people = button.getAttribute('data-tour-people');
+            var wifi = button.getAttribute('data-tour-wifi');
+            var surcharges = button.getAttribute('data-tour-surcharges');
+
+            // Заполнение поля формы
+            document.getElementById('editId').value = id;
+            document.getElementById('editDestination').value = destination;
+            document.getElementById('editDepartureDate').value = departure;
+            document.getElementById('editNights').value = nights;
+            document.getElementById('editCostPerPerson').value = cost;
+            document.getElementById('editNumberOfPeople').value = people;
+            document.getElementById('editHasWiFi').checked = wifi === 'true';
+            document.getElementById('editSurcharges').value = surcharges;
+        });
+
+        function setEditAction(id)
+        {
+            document.getElementById('editId').value = id;
+        }
+
+        function setDeleteAction(id)
+        {
+            document.getElementById('deleteTourId').value = id;
+        }
+    </script>
+}
