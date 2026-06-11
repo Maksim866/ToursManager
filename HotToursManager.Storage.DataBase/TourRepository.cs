@@ -83,7 +83,9 @@ namespace HotToursManager.Storage.DataBase
             await writer.SaveChangesAsync();
         }
 
-
+        /// <summary>
+        /// Получить тур по ID
+        /// </summary>
         public async Task<Tour> GetByIdAsync(int id)
         {
             var result = await reader.Read<Tour>()

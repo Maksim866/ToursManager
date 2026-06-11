@@ -7,8 +7,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HotToursManager.Web
 {
+
+    /// <summary>
+    /// Главный класс приложения, который настраивает и запускает веб-сервер.
+    /// </summary>
     public class Program
     {
+        /// <summary>
+        /// Точка входа в веб-приложение.
+        /// </summary>
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);

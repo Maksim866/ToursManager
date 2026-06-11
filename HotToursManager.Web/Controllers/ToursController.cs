@@ -46,7 +46,7 @@ namespace HotToursManager.Web.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            // Если есть ошибки, передаём данные обратно в модалку
+            // Если есть ошибки, передаёт данные обратно в модалку
             TempData["CreateErrors"] = string.Join("; ",
                 ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage));
             TempData["OpenCreateModal"] = true;
@@ -71,7 +71,7 @@ namespace HotToursManager.Web.Controllers
                 return NotFound();
             }
 
-            //Передаём данные тура в модалку через TempData
+            //Передаёт данные тура в модалку через TempData
             TempData["EditTourId"] = tour.Id;
             TempData["EditTourDestination"] = tour.Destination;
             TempData["EditTourDepartureDate"] = tour.DepartureDate.ToString("yyyy-MM-dd");
@@ -105,7 +105,7 @@ namespace HotToursManager.Web.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            // Если есть ошибки, передаём данные обратно в модалку
+            // Если есть ошибки, передаёт данные обратно в модалку
             TempData["EditTourId"] = tour.Id;
             TempData["EditTourDestination"] = tour.Destination;
             TempData["EditTourDepartureDate"] = tour.DepartureDate.ToString("yyyy-MM-dd");
