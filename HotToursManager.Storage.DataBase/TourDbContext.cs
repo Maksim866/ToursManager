@@ -25,6 +25,7 @@ namespace HotToursManager.Storage.DataBase
         public TourDbContext(DbContextOptions<TourDbContext> options)
            : base(options)
         {
+            Database.EnsureCreated();
         }
 
         /// <summary>
