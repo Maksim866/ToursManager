@@ -42,7 +42,7 @@ namespace HotToursManager.Web.Controllers
         /// <summary>
         /// GET: /Tours/Create
         /// </summary>
-        public async Task<IActionResult> Create()
+        public IActionResult Create()
         {
             return View();
         }
@@ -141,7 +141,7 @@ namespace HotToursManager.Web.Controllers
         /// POST: /Tours/DeleteConfirmed/{id}
         /// Удаляет тур с указанным id
         /// </summary>
-        [HttpPost]
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
@@ -150,4 +150,3 @@ namespace HotToursManager.Web.Controllers
         }
     }
 }
-

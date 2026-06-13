@@ -30,7 +30,7 @@
         <dd class="col-sm-9"><strong>@Model.TotalCost.ToString("N2") ₽</strong></dd>
     </dl>
 
-    <form asp-action="DeleteConfirmed" asp-route-id="@Model.Id" method="post" class="d-inline">
+    <form asp-action="Delete" asp-route-id="@Model.Id" method="post" class="d-inline">
         <button type="submit" class="btn btn-danger">🗑️ Удалить</button>
         <a asp-action="Index" class="btn btn-secondary">Отмена</a>
     </form>
