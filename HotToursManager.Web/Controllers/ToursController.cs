@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using HotToursManager.Services.Contracts;
 using HotToursManager.Models;
+using HotToursManager.Web.ViewModels;
 
 namespace HotToursManager.Web.Controllers
 {
@@ -24,10 +25,26 @@ namespace HotToursManager.Web.Controllers
         /// GET: /Tours
         /// Отображает список всех туров
         /// </summary>
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? message)
         {
             var tours = await tourService.GetAllToursAsync();
-            return View("~/Views/Home/Index.cshtml", tours);
+            var statistics = await tourService.GetStatisticsAsync();
+
+            var viewModel = new ToursViewModel
+            {
+                Tours = tours,
+                Statistics = statistics,
+                Message = message
+            };
+            return View(nameof(Index), viewModel);
+        }
+
+        /// <summary>
+        /// GET: /Tours/Create
+        /// </summary>
+        public async Task<IActionResult> Create()
+        {
+            return View();
         }
 
         /// <summary>
@@ -47,16 +64,10 @@ namespace HotToursManager.Web.Controllers
             if (ModelState.IsValid)
             {
                 await tourService.AddTourAsync(tour);
-                TempData["SuccessMessage"] = "Тур успешно добавлен!";
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { message = "Тур успешно добавлен!" });
             }
 
-            // Если есть ошибки, передаёт данные обратно в модалку
-            TempData["CreateErrors"] = string.Join("; ",
-                ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage));
-            TempData["OpenCreateModal"] = true;
-
-            return RedirectToAction(nameof(Index));
+            return View(tour);
         }
 
         /// <summary>
@@ -76,18 +87,7 @@ namespace HotToursManager.Web.Controllers
                 return NotFound();
             }
 
-            //Передаёт данные тура в модалку через TempData
-            TempData["EditTourId"] = tour.Id;
-            TempData["EditTourDestination"] = tour.Destination;
-            TempData["EditTourDepartureDate"] = tour.DepartureDate.ToString("yyyy-MM-dd");
-            TempData["EditTourNights"] = tour.Nights;
-            TempData["EditTourCostPerPerson"] = tour.CostPerPerson.ToString();
-            TempData["EditTourNumberOfPeople"] = tour.NumberOfPeople;
-            TempData["EditTourHasWiFi"] = tour.HasWiFi;
-            TempData["EditTourSurcharges"] = tour.Surcharges.ToString();
-            TempData["OpenEditModal"] = true;
-
-            return RedirectToAction(nameof(Index));
+            return View(tour);
         }
 
         /// <summary>
@@ -111,35 +111,43 @@ namespace HotToursManager.Web.Controllers
             if (ModelState.IsValid)
             {
                 await tourService.UpdateTourAsync(tour);
-                TempData["SuccessMessage"] = "Тур успешно обновлен!";
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { message = "Тур успешно обновлен!" });
             }
 
-            // Если есть ошибки, передаёт данные обратно в модалку
-            TempData["EditTourId"] = tour.Id;
-            TempData["EditTourDestination"] = tour.Destination;
-            TempData["EditTourDepartureDate"] = tour.DepartureDate.ToString("yyyy-MM-dd");
-            TempData["EditTourNights"] = tour.Nights;
-            TempData["EditTourCostPerPerson"] = tour.CostPerPerson.ToString();
-            TempData["EditTourNumberOfPeople"] = tour.NumberOfPeople;
-            TempData["EditTourHasWiFi"] = tour.HasWiFi;
-            TempData["EditTourSurcharges"] = tour.Surcharges.ToString();
-            TempData["OpenEditModal"] = true;
-
-            return RedirectToAction(nameof(Index));
+            return View(tour);
         }
 
         /// <summary>
-        /// POST: /Tours/Delete/{id}
+        /// GET: /Tours/Delete/{id}
+        /// Отображает страницу подтверждения удаления тура
+        /// </summary>
+        public async Task<IActionResult> Delete(int id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var tour = await tourService.GetTourByIdAsync(id);
+            if (tour == null)
+            {
+                return NotFound();
+            }
+
+            return View(tour);
+        }
+
+        /// <summary>
+        /// POST: /Tours/DeleteConfirmed/{id}
         /// Удаляет тур с указанным id
         /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             await tourService.DeleteTourAsync(id);
-            TempData["SuccessMessage"] = "Тур успешно удален!";
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { message = "Тур успешно удален!" });
         }
     }
 }
+

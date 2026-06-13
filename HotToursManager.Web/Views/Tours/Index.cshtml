@@ -1,0 +1,103 @@
+﻿@model HotToursManager.Web.ViewModels.ToursViewModel
+
+@{
+    ViewData["Title"] = "Список туров";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>📋 Список туров</h1>
+    <a asp-action="Create" class="btn btn-success">➕ Добавить новый тур</a>
+</div>
+
+@if (!string.IsNullOrEmpty(Model.Message))
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @Model.Message
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+
+<!-- ==================== БЛОК СТАТИСТИКИ ==================== -->
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card text-white bg-primary mb-3">
+            <div class="card-body text-center">
+                <h5 class="card-title">📋 Всего туров</h5>
+                <h2>@Model.Statistics.TotalTours</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-success mb-3">
+            <div class="card-body text-center">
+                <h5 class="card-title">💰 Общая стоимость</h5>
+                <h2>@Model.Statistics.TotalCost.ToString("N2") ₽</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-info mb-3">
+            <div class="card-body text-center">
+                <h5 class="card-title">💳 Общая сумма доплат</h5>
+                <h2>@Model.Statistics.TotalSurcharges.ToString("N2") ₽</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-warning mb-3">
+            <div class="card-body text-center">
+                <h5 class="card-title">📌 Туров с доплатами</h5>
+                <h2>@Model.Statistics.ToursWithSurcharges</h2>
+                <small>из @Model.Statistics.TotalTours туров</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (Model.Tours == null || !Model.Tours.Any())
+{
+    <div class="alert alert-info">
+        <h4>Список туров пуст</h4>
+        <p>Добавьте первый тур, нажав кнопку выше.</p>
+    </div>
+}
+else
+{
+    <table class="table table-striped table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Id</th>
+                <th>Направление</th>
+                <th>Дата вылета</th>
+                <th>Ночей</th>
+                <th>Цена за чел.</th>
+                <th>Кол-во людей</th>
+                <th>Wi-Fi</th>
+                <th>Доплаты</th>
+                <th>Общая стоимость</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Tours)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td><strong>@item.Destination</strong></td>
+                    <td>@item.DepartureDate.ToString("dd.MM.yyyy")</td>
+                    <td>@item.Nights</td>
+                    <td>@item.CostPerPerson.ToString("N2") ₽</td>
+                    <td>@item.NumberOfPeople</td>
+                    <td>@(item.HasWiFi ? "✅" : "❌")</td>
+                    <td>@item.Surcharges.ToString("N2") ₽</td>
+                    <td><strong>@item.TotalCost.ToString("N2") ₽</strong></td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">✏️</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">🗑️</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

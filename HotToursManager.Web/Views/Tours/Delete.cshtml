@@ -1,0 +1,37 @@
+﻿@model HotToursManager.Models.Tour
+
+@{
+    ViewData["Title"] = "Удалить тур";
+}
+
+<h1>🗑️ Подтверждение удаления</h1>
+<hr />
+
+<div class="alert alert-warning">
+    <h4>Вы действительно хотите удалить этот тур?</h4>
+    <p class="text-danger">Это действие нельзя отменить.</p>
+</div>
+
+<div>
+    <dl class="row">
+        <dt class="col-sm-3">Направление</dt>
+        <dd class="col-sm-9">@Model.Destination</dd>
+
+        <dt class="col-sm-3">Дата вылета</dt>
+        <dd class="col-sm-9">@Model.DepartureDate.ToString("dd.MM.yyyy")</dd>
+
+        <dt class="col-sm-3">Ночей</dt>
+        <dd class="col-sm-9">@Model.Nights</dd>
+
+        <dt class="col-sm-3">Цена за человека</dt>
+        <dd class="col-sm-9">@Model.CostPerPerson.ToString("N2") ₽</dd>
+
+        <dt class="col-sm-3">Общая стоимость</dt>
+        <dd class="col-sm-9"><strong>@Model.TotalCost.ToString("N2") ₽</strong></dd>
+    </dl>
+
+    <form asp-action="DeleteConfirmed" asp-route-id="@Model.Id" method="post" class="d-inline">
+        <button type="submit" class="btn btn-danger">🗑️ Удалить</button>
+        <a asp-action="Index" class="btn btn-secondary">Отмена</a>
+    </form>
+</div>
