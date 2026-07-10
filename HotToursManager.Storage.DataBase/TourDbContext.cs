@@ -1,12 +1,13 @@
 using HotToursManager.Models;
 using Microsoft.EntityFrameworkCore;
+using HotToursManager.Storage.Contracts;
 
 namespace HotToursManager.Storage.DataBase
 {
     /// <summary>
     /// Контекст базы данных для управления турами
     /// </summary>
-    public class TourDbContext : DbContext
+    public class TourDbContext : DbContext, IReader, IWriter
     {
         /// <summary>
         /// Таблица туров
@@ -19,11 +20,58 @@ namespace HotToursManager.Storage.DataBase
         public TourDbContext() => Database.EnsureCreated();
 
         /// <summary>
+        /// Конструктор для внедрения зависимостей
+        /// </summary>
+        public TourDbContext(DbContextOptions<TourDbContext> options)
+           : base(options)
+        {
+            Database.EnsureCreated();
+        }
+
+        /// <summary>
         /// Настройка подключения к БД
         /// </summary>
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=HotToursManager;Username=postgres;Password=14082002");
+        }
+
+        /// <summary>
+        /// Настройка моделей — конвертация DateTime в UTC
+        /// </summary>
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Tour>()
+                .Property(t => t.DepartureDate)
+                .HasConversion(
+                    v => DateTime.SpecifyKind(v, DateTimeKind.Utc),
+                    v => DateTime.SpecifyKind(v, DateTimeKind.Utc)
+                );
+        }
+
+        /// <summary>
+        /// Получение данных из БД без отслеживания изменений
+        /// </summary>
+        IQueryable<TEntity> IReader.Read<TEntity>()
+        {
+            return base.Set<TEntity>()
+                       .AsNoTracking()
+                       .AsQueryable();
+        }
+
+        void IWriter.Add<TEntity>(TEntity entity)
+        {
+            base.Add(entity);
+        }
+
+        void IWriter.Update<TEntity>(TEntity entity)
+        {
+            base.Update(entity);
+        }
+
+        void IWriter.Delete<TEntity>(TEntity entity)
+        {
+            base.Remove(entity);
         }
     }
 }

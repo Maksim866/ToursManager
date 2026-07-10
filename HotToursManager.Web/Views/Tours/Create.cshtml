@@ -1,0 +1,71 @@
+﻿@model HotToursManager.Models.Tour
+
+@{
+    ViewData["Title"] = "Добавить тур";
+}
+
+<h1>➕ Добавить новый тур</h1>
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="mb-3">
+                <label asp-for="Destination" class="form-label">Направление <span class="text-danger">*</span></label>
+                <input asp-for="Destination" class="form-control" required minlength="2" maxlength="100" />
+                <span asp-validation-for="Destination" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="DepartureDate" class="form-label">Дата вылета <span class="text-danger">*</span></label>
+                <input asp-for="DepartureDate" type="date" class="form-control"
+                       min="@DateTime.Today.ToString("yyyy-MM-dd")" required />
+                <span asp-validation-for="DepartureDate" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Nights" class="form-label">Количество ночей <span class="text-danger">*</span></label>
+                <input asp-for="Nights" type="number" class="form-control" min="1" max="99" required />
+                <span asp-validation-for="Nights" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="CostPerPerson" class="form-label">Цена за человека (₽) <span class="text-danger">*</span></label>
+                <input asp-for="CostPerPerson" type="number" class="form-control"
+                       step="0.01" min="1000" max="500000" required />
+                <span asp-validation-for="CostPerPerson" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="NumberOfPeople" class="form-label">Количество отдыхающих <span class="text-danger">*</span></label>
+                <input asp-for="NumberOfPeople" type="number" class="form-control" min="1" max="5" required />
+                <span asp-validation-for="NumberOfPeople" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3 form-check">
+                <input asp-for="HasWiFi" type="checkbox" class="form-check-input" />
+                <label asp-for="HasWiFi" class="form-check-label">Наличие Wi-Fi</label>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Surcharges" class="form-label">Доплаты (₽)</label>
+                <input asp-for="Surcharges" type="number" class="form-control"
+                       step="0.01" min="0" max="100000" value="0" />
+                <span asp-validation-for="Surcharges" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <button type="submit" class="btn btn-success">💾 Сохранить</button>
+                <a asp-action="Index" class="btn btn-secondary">Отмена</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
